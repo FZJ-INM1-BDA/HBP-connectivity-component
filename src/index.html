@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>HBP Connectivity Component</title>
+
+  <script type="module" src="/build/connectivity-component.esm.js"></script>
+  <script nomodule src="/build/connectivity-component.js"></script>
+
+</head>
+<body>
+
+
+<hbp-connectivity-matrix-row
+  getregions = "true"
+  region="Area PFcm (IPL) - right hemisphere"
+  theme="dark"
+  loadurl="https://connectivityquery-connectivity.apps-dev.hbp.eu/connectivity"
+  show-description = "true"
+  show-export = "true"
+  show-source = "true"
+  show-title = "true"
+  show-toolbar = "true">
+  <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
+  <div slot="connectedRegionMenu"> <button>Click</button> Menu Goes Here </div>
+</hbp-connectivity-matrix-row>
+
+</body>
+<script>
+  const a = document.querySelector('hbp-connectivity-matrix-row')
+  a.addEventListener('connectivityDataReceived', event=> {
+      console.log(event)
+  })
+  a.addEventListener('collapsedMenuChanged', event=> {
+      console.log(event)
+  })
+</script>
+</html>
