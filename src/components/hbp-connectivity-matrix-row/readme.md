@@ -11,20 +11,20 @@
 | ----------------- | ------------------ | ----------- | -------- | ----------- |
 | `loadurl`         | `loadurl`          |             | `string` | `undefined` |
 | `region`          | `region`           |             | `string` | `undefined` |
-| `showDescription` | `show-description` |             | `string` | `undefined` |
-| `showExport`      | `show-export`      |             | `string` | `undefined` |
-| `showSource`      | `show-source`      |             | `string` | `undefined` |
-| `showTitle`       | `show-title`       |             | `string` | `undefined` |
-| `showToolbar`     | `show-toolbar`     |             | `string` | `undefined` |
-| `theme`           | `theme`            |             | `string` | `undefined` |
+| `showDescription` | `show-description` |             | `string` | `false`     |
+| `showExport`      | `show-export`      |             | `string` | `false`     |
+| `showSource`      | `show-source`      |             | `string` | `false`     |
+| `showTitle`       | `show-title`       |             | `string` | `false`     |
+| `showToolbar`     | `show-toolbar`     |             | `string` | `false`     |
+| `theme`           | `theme`            |             | `string` | `dark`      |
 
 
 ## Events
 
-| Event                      | Description | Type               |
-| -------------------------- | ----------- | ------------------ |
-| `collapsedMenuChanged`     |             | `CustomEvent<any>` |
-| `connectivityDataReceived` |             | `CustomEvent<any>` |
+| Event                      | Description                  |Type                |
+| -------------------------- | ---------------------------- | ------------------ |
+| `collapsedMenuChanged`     | Gives expanded menu item id  | `CustomEvent<any>` |
+| `connectivityDataReceived` | Returns connected regions    | `CustomEvent<any>` |
 
 
 ## Dependencies
