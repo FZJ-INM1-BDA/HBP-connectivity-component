@@ -29,11 +29,11 @@ export class ExportConnectivityDiagram {
           <small>CSV</small>
         </a>
 
-        <a class="d-flex flex-column align-items-center mr-2 ml-2 " onClick={this.downloadJpg.bind(this)}>
+        <a class="d-flex flex-column align-items-center mr-2 ml-2 " onClick={this.downloadPng.bind(this)}>
           {!this.takingScreenshot ?
             <button disabled={this.takingScreenshot}
                     class={(this.theme === 'light' ? 'dark-border-btn' : 'light-border-btn') + ' btn border-btn btn-circle cp'}>
-              <small>.jpg</small>
+              <small>.png</small>
             </button> :
             <div class={(this.theme === 'light' ? 'loader-color-light' : 'loader-color-black') + ' loader'}>Loading...</div>}
           <small>Image</small>
@@ -65,7 +65,7 @@ export class ExportConnectivityDiagram {
   }
 
 
-  @Method() downloadJpg() {
+  @Method() downloadPng() {
     this.takingScreenshot = true
     const node = this.el.shadowRoot.querySelector('#chartContent');
     domtoimage.toPng(node)
@@ -77,7 +77,7 @@ export class ExportConnectivityDiagram {
 
         const link = document.createElement("a")
         link.setAttribute("href", dataUrl)
-        link.setAttribute("download", "connectivity.jpg")
+        link.setAttribute("download", "connectivity.png")
         document.body.appendChild(link)
         link.click()
       })
