@@ -4,15 +4,46 @@
 
 ### Example of using component
 
-    <hbp-connectivity-matrix-row --> Create component
-            region="region name" --> Set source region name 
-            theme="light" --> Set theme (There are 2 light and dark themes. default theme is dark.)
-            loadurl="https://example.com" --> Set source url of connectivity data (It will hardcoded in component soon)
-            show-description="true" --> Show description area
-            show-export="true" --> Show export area
-            show-source="true" --> Show source component
-            show-title="true" --> Show title
-            show-toolbar="true"> --> Show toolbar ("log10", "show all results"...)
-        <div slot="header"></div> --> Send HTML to set custom header
-        <div slot="connectedRegionMenu"></div> --> Sent HTML to set any content under connected area after user clicks
+    <hbp-connectivity-matrix-row -> Create component
+            region="region name" -> Set source region name 
+            theme="light" -> Set theme (There are 2 light and dark themes. default theme is dark.)
+            loadurl="https://example.com" -> Set source url of connectivity data (It will hardcoded in component soon)
+            show-description="true" -> Show description area
+            show-export="true" -> Show export area
+            show-source="true" -> Show source component
+            show-title="true" -> Show title
+            show-toolbar="true"> -> Show toolbar ("log10", "show all results"...)
+        <div slot="header"></div> -> Send HTML to set custom header
+        <div slot="connectedRegionMenu"></div> -> Sent HTML to set any content under connected area after user clicks
     </hbp-connectivity-matrix-row>
+    
+    
+## Import component
+### Angular 2+ application
+1. Install npm package - 
+
+       npm install hbp-connectivity-component --save
+       
+2. Import "CUSTOM_ELEMENTS_SCHEMA" from angular core to main module of application
+      
+       import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+
+3. Add "CUSTOM_ELEMENTS_SCHEMA" in schemas in main module
+
+       schemas: [CUSTOM_ELEMENTS_SCHEMA]
+       
+3. Import "defineCustomElements" from "hbp-connectivity-component/dist/loader" into main.ts file
+      main.ts
+      
+       import {defineCustomElements} from 'hbp-connectivity-component/dist/loader'
+       
+       
+4. Use "defineCustomElements" in main.ts file              
+      main.ts
+      
+       defineCustomElements(window) 
+
+5. Done! component is available in application you can use it with tag:
+       
+       <hbp-connectivity-matrix-row></hbp-connectivity-matrix-row>
+
