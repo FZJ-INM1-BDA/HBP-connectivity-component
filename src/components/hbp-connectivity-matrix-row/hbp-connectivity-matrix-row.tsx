@@ -1,8 +1,5 @@
 import {Component, h, Element, State, Prop, Watch, EventEmitter} from "@stencil/core";
 
-// import domtoimage from 'dom-to-image';
-
-
 @Component({
   tag: 'hbp-connectivity-matrix-row',
   styleUrls: ['./hbp-connectivity-matrix-row.scss',],
@@ -21,6 +18,8 @@ export class HbpConnectivityMatrixRow {
   @State() regionDescriptionText
   @State() dataIsLoading = false
   @State() collapseMenu = -1
+  @State() datasetDescription = ''
+  @State() datasetName = ''
 
   // @ts-ignore
   @Event({bubbles: true, composed: true}) connectivityDataReceived: EventEmitter<any>
@@ -28,15 +27,17 @@ export class HbpConnectivityMatrixRow {
   @Event({bubbles: true, composed: true}) collapsedMenuChanged: EventEmitter<any>
 
 
-  @Prop({mutable: true}) theme: string
-  @Prop({mutable: true}) loadurl: string
-  @Prop({mutable: true}) showDescription: string
-  @Prop({mutable: true}) showExport: string
-  @Prop({mutable: true}) showSource: string
-  @Prop({mutable: true}) showTitle: string
-  @Prop({mutable: true}) showToolbar: string
+  @Prop({mutable: true}) theme: string = 'dark'
+  @Prop({mutable: true}) loadurl: string = 'https://connectivityquery-connectivity.apps-dev.hbp.eu/connectivity'
+  @Prop({mutable: true}) datasetUrl: string = 'https://connectivityquery-connectivity.apps-dev.hbp.eu/studies'
+  @Prop({mutable: true}) showDatasetName: string = 'true'
+  @Prop({mutable: true}) showDescription: string = 'true'
+  @Prop({mutable: true}) showExport: string = 'true'
+  @Prop({mutable: true}) showSource: string = 'true'
+  @Prop({mutable: true}) showTitle: string = 'false'
+  @Prop({mutable: true}) showToolbar: string = 'true'
 
-  @Prop({mutable: true, reflectToAttr: true}) region: string
+  @Prop({mutable: true, reflectToAttr: true}) region: string = 'Area 4a (PreCG) - right hemisphere'
 
   @Watch('region')
   regionChanged(newValue: string, oldValue: string) {
@@ -49,6 +50,27 @@ export class HbpConnectivityMatrixRow {
   componentWillLoad() {
     this.dataIsLoading = true
     this.getConnectedAreas(this.region)
+    this.getDatasetInfo()
+  }
+
+  getDatasetInfo = async () => {
+    this.fetchDatasetInfo()
+      .then(resp => {
+        this.datasetDescription = resp.description
+        this.datasetName = resp.title
+      })
+  }
+
+  fetchDatasetInfo = async () => {
+    const responce = await fetch(this.datasetUrl,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+    return responce.json()
   }
 
   getConnectedAreas = async (areaName) => {
@@ -85,10 +107,6 @@ export class HbpConnectivityMatrixRow {
   }
 
   fetchConnectedAreas = async (areaName) => {
-
-    if (areaName.indexOf(' - right hemisphere') > -1 || areaName.indexOf(' - left hemisphere') > -1)
-      areaName = areaName.replace(areaName.indexOf(' - left hemisphere') > -1 ? ' - left hemisphere' : ' - right hemisphere', '')
-
     const responce = await fetch(this.loadurl,
       {
         method: 'POST',
@@ -103,6 +121,14 @@ export class HbpConnectivityMatrixRow {
 
   emitConnectedRegionEvent() {
     this.connectivityDataReceived.emit(this.connectedAreas)
+  }
+
+  cleanAreaNameForDiagram(area) {
+    if (area.includes('Area '))
+      area = area.replace('Area ', '')
+    if (area.indexOf(' - right hemisphere') > -1 || area.indexOf(' - left hemisphere') > -1)
+      area = area.replace(area.indexOf(' - left hemisphere') > -1 ? ' - left hemisphere' : ' - right hemisphere', '')
+    return area
   }
 
   render() {
@@ -137,7 +163,7 @@ export class HbpConnectivityMatrixRow {
                  }}>
 
               <small class="w-50 flex-1 no-wrap text-truncate chart-line-height">
-                {r.name.includes('Area ') ? r.name.replace('Area ', '') : r.name}
+                {this.cleanAreaNameForDiagram(r.name)}
               </small>
               <div class="w-100 flex-3 position-relative">
 
@@ -177,13 +203,12 @@ export class HbpConnectivityMatrixRow {
               </div>
             </div>
 
-
             {this.collapseMenu === i && <slot name="connectedRegionMenu"/>}
-
 
           </div>
         ))}
       </div>
+
 
 
     return [
@@ -193,25 +218,20 @@ export class HbpConnectivityMatrixRow {
           <slot name="header"/>
           <br class="position-relative mb-2"> </br>
           <div class="d-flex flex-column">
-            {this.showTitle === 'true' && <h5>Connectivity Browser</h5>}
-
+            {this.showTitle === 'true'? <h5>Connectivity Browser</h5> : null}
+            {this.showDatasetName === 'true' && <div class="ml-2"><span style={{opacity: '0.6'}}>Dataset:</span> {this.datasetName}</div>}
             {this.showDescription === 'true' &&
             <div class="mb-2">
               <div
-                class={(this.collapsedConnectivityDescription ? 'regionDescriptionTextOpened overflow-auto ' : 'regionDescriptionTextClass overflow-hidden ')
+                class={(this.collapsedConnectivityDescription ? ' regionDescriptionTextOpened overflow-auto ' : ' regionDescriptionTextClass overflow-hidden ')
                 + ' row m-2 pr-2 position-relative text-justify '
                 + ((this.regionDescriptionText && +this.regionDescriptionText.scrollHeight > +this.regionDescriptionText.clientHeight) && !this.collapsedConnectivityDescription ? (this.theme === 'light' ? 'linear-gradient-fade-light' : 'linear-gradient-fade-dark') : '')}
                 id="regionDescriptionText"
                 onClick={() => !this.collapsedConnectivityDescription ? this.collapsedConnectivityDescription = true : null}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                type and scrambled it to make a type specimen book.
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                type and scrambled it to make a type specimen book.
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                type and scrambled it to make a type specimen book.
+                <span>
+                  <span style={{opacity: '0.6'}}>Description: </span>
+                  {this.datasetDescription}
+                </span>
               </div>
 
               {this.regionDescriptionText && +this.regionDescriptionText.scrollHeight > +this.regionDescriptionText.clientHeight && !this.collapsedConnectivityDescription ?
@@ -229,12 +249,12 @@ export class HbpConnectivityMatrixRow {
                 : ''}
             </div>}
 
-            {this.showSource === 'true' && <span>Source region - {this.region}</span>}
+            {this.showSource === 'true' && <div class="ml-2"><span style={{opacity: '0.6'}}>Source region:</span> {this.region}</div>}
 
           </div>
           <span class="mi mi-face"></span>
 
-          {this.showToolbar && <div class="d-flex">
+          {this.showToolbar && <div class="d-flex ml-2">
             <div class="mt-2 mr-3 mb-2 cp" onClick={() => this.showLog10 = !this.showLog10}>
               <input checked={this.showLog10}
                      id="log-10-check-box"

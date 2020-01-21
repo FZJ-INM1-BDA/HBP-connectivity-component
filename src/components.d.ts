@@ -12,14 +12,16 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface ExportConnectivityDiagram {
     'connectedAreas': any;
-    'downloadJpg': () => Promise<void>;
+    'downloadPng': () => Promise<void>;
     'el': any;
     'getCSVData': () => Promise<unknown>;
     'theme': string;
   }
   interface HbpConnectivityMatrixRow {
+    'datasetUrl': string;
     'loadurl': string;
     'region': string;
+    'showDatasetName': string;
     'showDescription': string;
     'showExport': string;
     'showSource': string;
@@ -56,10 +58,12 @@ declare namespace LocalJSX {
     'theme'?: string;
   }
   interface HbpConnectivityMatrixRow {
+    'datasetUrl'?: string;
     'loadurl'?: string;
     'onCollapsedMenuChanged'?: (event: CustomEvent<any>) => void;
     'onConnectivityDataReceived'?: (event: CustomEvent<any>) => void;
     'region'?: string;
+    'showDatasetName'?: string;
     'showDescription'?: string;
     'showExport'?: string;
     'showSource'?: string;

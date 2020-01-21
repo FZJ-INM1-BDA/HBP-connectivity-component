@@ -16,7 +16,7 @@
 
 ## Methods
 
-### `downloadJpg() => Promise<void>`
+### `downloadPng() => Promise<void>`
 
 
 

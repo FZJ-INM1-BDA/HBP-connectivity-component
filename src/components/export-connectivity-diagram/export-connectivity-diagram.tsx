@@ -65,7 +65,7 @@ export class ExportConnectivityDiagram {
   }
 
 
-  @Method() downloadPng() {
+  @Method() async downloadPng() {
     this.takingScreenshot = true
     const node = this.el.shadowRoot.querySelector('#chartContent');
     domtoimage.toPng(node)
