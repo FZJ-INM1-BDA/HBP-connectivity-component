@@ -12,7 +12,9 @@
 <body>
 
 
+
 <hbp-connectivity-matrix-row
+  style="height: 800px"
   getregions = "true"
   region="Area PFcm (IPL) - right hemisphere"
   theme="dark"
@@ -21,7 +23,10 @@
   show-export = "true"
   show-source = "true"
   show-title = "true"
-  show-toolbar = "true">
+  show-toolbar = "true"
+  custom-dataset-selector = "true"
+  custom-height="500px"
+>
   <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
   <div slot="connectedRegionMenu"> <button>Click</button> Menu Goes Here </div>
 </hbp-connectivity-matrix-row>

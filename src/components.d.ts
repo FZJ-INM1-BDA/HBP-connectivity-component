@@ -18,6 +18,9 @@ export namespace Components {
     'theme': string;
   }
   interface HbpConnectivityMatrixRow {
+    'customDatasetSelector': string;
+    'customHeight': string;
+    'customWidth': string;
     'datasetUrl': string;
     'loadurl': string;
     'region': string;
@@ -58,10 +61,14 @@ declare namespace LocalJSX {
     'theme'?: string;
   }
   interface HbpConnectivityMatrixRow {
+    'customDatasetSelector'?: string;
+    'customHeight'?: string;
+    'customWidth'?: string;
     'datasetUrl'?: string;
     'loadurl'?: string;
     'onCollapsedMenuChanged'?: (event: CustomEvent<any>) => void;
     'onConnectivityDataReceived'?: (event: CustomEvent<any>) => void;
+    'onDatasetDataReceived'?: (event: CustomEvent<any>) => void;
     'region'?: string;
     'showDatasetName'?: string;
     'showDescription'?: string;

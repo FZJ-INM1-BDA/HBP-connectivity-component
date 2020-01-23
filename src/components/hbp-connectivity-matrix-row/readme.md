@@ -7,18 +7,21 @@
 
 ## Properties
 
-| Property          | Attribute           | Description | Type     | Default                                                                 |
-| ----------------- | ------------------- | ----------- | -------- | ----------------------------------------------------------------------- |
-| `datasetUrl`      | `dataset-url`       |             | `string` | `'https://connectivityquery-connectivity.apps-dev.hbp.eu/studies'`      |
-| `loadurl`         | `loadurl`           |             | `string` | `'https://connectivityquery-connectivity.apps-dev.hbp.eu/connectivity'` |
-| `region`          | `region`            |             | `string` | `'Area 4a (PreCG) - right hemisphere'`                                  |
-| `showDatasetName` | `show-dataset-name` |             | `string` | `'true'`                                                                |
-| `showDescription` | `show-description`  |             | `string` | `'true'`                                                                |
-| `showExport`      | `show-export`       |             | `string` | `'true'`                                                                |
-| `showSource`      | `show-source`       |             | `string` | `'true'`                                                                |
-| `showTitle`       | `show-title`        |             | `string` | `'false'`                                                               |
-| `showToolbar`     | `show-toolbar`      |             | `string` | `'true'`                                                                |
-| `theme`           | `theme`             |             | `string` | `'dark'`                                                                |
+| Property                | Attribute                 | Description | Type     | Default                                |
+| ----------------------- | ------------------------- | ----------- | -------- | -------------------------------------- |
+| `customDatasetSelector` | `custom-dataset-selector` |             | `string` | `''`                                   |
+| `customHeight`          | `custom-height`           |             | `string` | `''`                                   |
+| `customWidth`           | `custom-width`            |             | `string` | `''`                                   |
+| `datasetUrl`            | `dataset-url`             |             | `string` | `''`                                   |
+| `loadurl`               | `loadurl`                 |             | `string` | `''`                                   |
+| `region`                | `region`                  |             | `string` | `'Area 4a (PreCG) - right hemisphere'` |
+| `showDatasetName`       | `show-dataset-name`       |             | `string` | `''`                                   |
+| `showDescription`       | `show-description`        |             | `string` | `''`                                   |
+| `showExport`            | `show-export`             |             | `string` | `''`                                   |
+| `showSource`            | `show-source`             |             | `string` | `''`                                   |
+| `showTitle`             | `show-title`              |             | `string` | `''`                                   |
+| `showToolbar`           | `show-toolbar`            |             | `string` | `''`                                   |
+| `theme`                 | `theme`                   |             | `string` | `''`                                   |
 
 
 ## Events
@@ -27,6 +30,7 @@
 | -------------------------- | ----------- | ------------------ |
 | `collapsedMenuChanged`     |             | `CustomEvent<any>` |
 | `connectivityDataReceived` |             | `CustomEvent<any>` |
+| `datasetDataReceived`      |             | `CustomEvent<any>` |
 
 
 ## Dependencies

@@ -25,17 +25,22 @@ export class HbpConnectivityMatrixRow {
   @Event({bubbles: true, composed: true}) connectivityDataReceived: EventEmitter<any>
   // @ts-ignore
   @Event({bubbles: true, composed: true}) collapsedMenuChanged: EventEmitter<any>
+  // @ts-ignore
+  @Event({bubbles: true, composed: true}) datasetDataReceived: EventEmitter<any>
 
 
-  @Prop({mutable: true}) theme: string = 'dark'
-  @Prop({mutable: true}) loadurl: string = 'https://connectivityquery-connectivity.apps-dev.hbp.eu/connectivity'
-  @Prop({mutable: true}) datasetUrl: string = 'https://connectivityquery-connectivity.apps-dev.hbp.eu/studies'
-  @Prop({mutable: true}) showDatasetName: string = 'true'
-  @Prop({mutable: true}) showDescription: string = 'true'
-  @Prop({mutable: true}) showExport: string = 'true'
-  @Prop({mutable: true}) showSource: string = 'true'
-  @Prop({mutable: true}) showTitle: string = 'false'
-  @Prop({mutable: true}) showToolbar: string = 'true'
+  @Prop({mutable: true}) theme: string = ''
+  @Prop({mutable: true}) loadurl: string = ''
+  @Prop({mutable: true}) datasetUrl: string = ''
+  @Prop({mutable: true}) showDatasetName: string = ''
+  @Prop({mutable: true}) showDescription: string = ''
+  @Prop({mutable: true}) showExport: string = ''
+  @Prop({mutable: true}) showSource: string = ''
+  @Prop({mutable: true}) showTitle: string = ''
+  @Prop({mutable: true}) showToolbar: string = ''
+  @Prop({mutable: true, reflectToAttr: true}) customHeight: string = ''
+  @Prop({mutable: true, reflectToAttr: true}) customWidth: string = ''
+  @Prop({mutable: true}) customDatasetSelector: string = ''
 
   @Prop({mutable: true, reflectToAttr: true}) region: string = 'Area 4a (PreCG) - right hemisphere'
 
@@ -44,6 +49,19 @@ export class HbpConnectivityMatrixRow {
     if (newValue !== oldValue) {
       this.collapseMenu = -1
       this.getConnectedAreas(newValue)
+    }
+  }
+
+  @Watch('customHeight')
+  customHeightChanged(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+
+    }
+  }
+  @Watch('customWidth')
+  customWidthChanged(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+
     }
   }
 
@@ -58,6 +76,7 @@ export class HbpConnectivityMatrixRow {
       .then(resp => {
         this.datasetDescription = resp.description
         this.datasetName = resp.title
+        this.datasetDataReceived.emit([resp])
       })
   }
 
@@ -214,16 +233,18 @@ export class HbpConnectivityMatrixRow {
     return [
       (
         <div
-          class={(this.theme === 'light' ? 'bg-light' : 'bg-dark') + ' container w-100 h-100 overflow-hidden d-block d-flex flex-column p-2 '}>
+          class={(this.theme === 'light' ? 'bg-light' : 'bg-dark')
+                + ' container d-block d-flex flex-column p-2 '}
+          style={{height: this.customHeight? this.customHeight : '100%', width: this.customWidth? this.customWidth : '100%'}}>
           <slot name="header"/>
           <br class="position-relative mb-2"> </br>
           <div class="d-flex flex-column">
             {this.showTitle === 'true'? <h5>Connectivity Browser</h5> : null}
-            {this.showDatasetName === 'true' && <div class="ml-2"><span style={{opacity: '0.6'}}>Dataset:</span> {this.datasetName}</div>}
-            {this.showDescription === 'true' &&
+            {(this.showDatasetName === 'true' && !this.customDatasetSelector) && <div><span style={{opacity: '0.6'}}>Dataset:</span> {this.datasetName}</div>}
+            {(this.showDescription === 'true' && !this.customDatasetSelector) &&
             <div class="mb-2">
               <div
-                class={(this.collapsedConnectivityDescription ? ' regionDescriptionTextOpened overflow-auto ' : ' regionDescriptionTextClass overflow-hidden ')
+                class={(this.collapsedConnectivityDescription ? ' regionDescriptionTextOpened overflow-hidden ' : ' regionDescriptionTextClass overflow-hidden ')
                 + ' row m-2 pr-2 position-relative text-justify '
                 + ((this.regionDescriptionText && +this.regionDescriptionText.scrollHeight > +this.regionDescriptionText.clientHeight) && !this.collapsedConnectivityDescription ? (this.theme === 'light' ? 'linear-gradient-fade-light' : 'linear-gradient-fade-dark') : '')}
                 id="regionDescriptionText"
@@ -249,18 +270,26 @@ export class HbpConnectivityMatrixRow {
                 : ''}
             </div>}
 
-            {this.showSource === 'true' && <div class="ml-2"><span style={{opacity: '0.6'}}>Source region:</span> {this.region}</div>}
+
+            {this.customDatasetSelector && <slot name="dataset"/>}
+
+            {this.showSource === 'true' &&
+              <div class="d-flex flex-column">
+                <small><span style={{opacity: '0.6'}}>Source region</span></small>
+                {this.region}
+              </div>
+            }
 
           </div>
           <span class="mi mi-face"></span>
 
-          {this.showToolbar && <div class="d-flex ml-2">
+          {this.showToolbar && <div class="d-flex">
             <div class="mt-2 mr-3 mb-2 cp" onClick={() => this.showLog10 = !this.showLog10}>
               <input checked={this.showLog10}
                      id="log-10-check-box"
                      class="mr-2"
                      type="checkbox"/>
-              <span>Show Log10</span>
+              <span>Log10</span>
             </div>
 
             <div class="mt-2 mb-2 cp" onClick={() => this.showAllConnectionNumbers = !this.showAllConnectionNumbers}>
@@ -268,7 +297,7 @@ export class HbpConnectivityMatrixRow {
                      id="log-10-check-box"
                      class="mr-2"
                      type="checkbox"/>
-              <span>Show All results</span>
+              <span>All results</span>
             </div>
           </div>}
 
