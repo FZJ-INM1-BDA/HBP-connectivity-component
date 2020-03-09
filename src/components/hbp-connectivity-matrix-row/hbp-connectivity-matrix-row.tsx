@@ -126,7 +126,7 @@ export class HbpConnectivityMatrixRow {
   }
 
   fetchConnectedAreas = async (areaName) => {
-    const responce = await fetch(this.loadurl,
+    const response = await fetch(this.loadurl,
       {
         method: 'POST',
         headers: {
@@ -135,7 +135,7 @@ export class HbpConnectivityMatrixRow {
         body: JSON.stringify({'area': `${areaName}`})
       })
 
-    return responce.json()
+    return response.json()
   }
 
   emitConnectedRegionEvent() {

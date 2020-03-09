@@ -17,6 +17,13 @@ export namespace Components {
     'getCSVData': () => Promise<unknown>;
     'theme': string;
   }
+  interface FullConnectivityGrid {
+    'gridHeight': string;
+    'gridWidth': string;
+    'pixelSize': string;
+    'textWidth': string;
+    'theme': string;
+  }
   interface HbpConnectivityMatrixRow {
     'customDatasetSelector': string;
     'customHeight': string;
@@ -43,6 +50,12 @@ declare global {
     new (): HTMLExportConnectivityDiagramElement;
   };
 
+  interface HTMLFullConnectivityGridElement extends Components.FullConnectivityGrid, HTMLStencilElement {}
+  var HTMLFullConnectivityGridElement: {
+    prototype: HTMLFullConnectivityGridElement;
+    new (): HTMLFullConnectivityGridElement;
+  };
+
   interface HTMLHbpConnectivityMatrixRowElement extends Components.HbpConnectivityMatrixRow, HTMLStencilElement {}
   var HTMLHbpConnectivityMatrixRowElement: {
     prototype: HTMLHbpConnectivityMatrixRowElement;
@@ -50,6 +63,7 @@ declare global {
   };
   interface HTMLElementTagNameMap {
     'export-connectivity-diagram': HTMLExportConnectivityDiagramElement;
+    'full-connectivity-grid': HTMLFullConnectivityGridElement;
     'hbp-connectivity-matrix-row': HTMLHbpConnectivityMatrixRowElement;
   }
 }
@@ -58,6 +72,14 @@ declare namespace LocalJSX {
   interface ExportConnectivityDiagram {
     'connectedAreas'?: any;
     'el'?: any;
+    'theme'?: string;
+  }
+  interface FullConnectivityGrid {
+    'gridHeight'?: string;
+    'gridWidth'?: string;
+    'onConnectivityDataReceived'?: (event: CustomEvent<any>) => void;
+    'pixelSize'?: string;
+    'textWidth'?: string;
     'theme'?: string;
   }
   interface HbpConnectivityMatrixRow {
@@ -81,6 +103,7 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'export-connectivity-diagram': ExportConnectivityDiagram;
+    'full-connectivity-grid': FullConnectivityGrid;
     'hbp-connectivity-matrix-row': HbpConnectivityMatrixRow;
   }
 }
@@ -92,6 +115,7 @@ declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
       'export-connectivity-diagram': LocalJSX.ExportConnectivityDiagram & JSXBase.HTMLAttributes<HTMLExportConnectivityDiagramElement>;
+      'full-connectivity-grid': LocalJSX.FullConnectivityGrid & JSXBase.HTMLAttributes<HTMLFullConnectivityGridElement>;
       'hbp-connectivity-matrix-row': LocalJSX.HbpConnectivityMatrixRow & JSXBase.HTMLAttributes<HTMLHbpConnectivityMatrixRowElement>;
     }
   }
