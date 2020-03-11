@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property         | Attribute         | Description | Type     | Default     |
-| ---------------- | ----------------- | ----------- | -------- | ----------- |
-| `connectedAreas` | `connected-areas` |             | `any`    | `undefined` |
-| `el`             | `el`              |             | `any`    | `undefined` |
-| `theme`          | `theme`           |             | `string` | `undefined` |
+| Property         | Attribute         | Description | Type     |
+| ---------------- | ----------------- | ----------- | -------- |
+| `connectedAreas` | `connected-areas` | Connected areas to export as csv | `any`    |
+| `el`             | `el`              | element to export as png | `any`    |
+| `theme`          | `theme`           | Set theme ('dark' or 'light') | `string` |
 
 
 ## Methods
@@ -51,5 +51,3 @@ graph TD;
 ```
 
 ----------------------------------------------
-
-*Built with [StencilJS](https://stenciljs.com/)*

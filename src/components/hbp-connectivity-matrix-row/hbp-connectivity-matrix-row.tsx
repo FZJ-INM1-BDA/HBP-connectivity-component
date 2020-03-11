@@ -41,8 +41,7 @@ export class HbpConnectivityMatrixRow {
   @Prop({mutable: true, reflectToAttr: true}) customHeight: string = ''
   @Prop({mutable: true, reflectToAttr: true}) customWidth: string = ''
   @Prop({mutable: true}) customDatasetSelector: string = ''
-
-  @Prop({mutable: true, reflectToAttr: true}) region: string = 'Area 4a (PreCG) - right hemisphere'
+  @Prop({mutable: true, reflectToAttr: true}) region: string = ''
 
   @Watch('region')
   regionChanged(newValue: string, oldValue: string) {
