@@ -1,14 +1,14 @@
 # HBP Connectivity browser component
 
-HBP connectivity component is component 
+HBP connectivity component is a component 
 *built with [StencilJS](https://stenciljs.com/)* to display and 
-export connectivity matrix. 
-There are 2 base components.
-1. hbp-connectivity-matrix-row - too see connectivity of single source region in the form of diagram.
-2. export-connectivity-diagram - too export connectivity data. Component is automatically imported in 
-"hbp-connectivity-matrix-row" and to enable it set "show-export="true"" in "hbp-connectivity-matrix-row"
+export a connectivity matrix in a 3D brain volume viewer. 
+There are 2 core components:
+1. hbp-connectivity-matrix-row - visualizes the connection strengths from a single source region as a bar chart.
+2. export-connectivity-diagram - exports the connectivity matrix. This functionality is automatically imported in 
+"hbp-connectivity-matrix-row". To enable, set "show-export="true"" in "hbp-connectivity-matrix-row"
 
-### Example of using component
+### Example use
 
     <hbp-connectivity-matrix-row -> Create component
             region="region name" -> Set source region name 
@@ -32,7 +32,7 @@ There are 2 base components.
 
     
     
-## Import component in your application
+## Importing the component in your application
 ### Angular 2+ application
 1. Install npm package - 
 
