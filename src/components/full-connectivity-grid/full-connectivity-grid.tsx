@@ -20,10 +20,10 @@ export class FullConnectivityGrid {
   hoveringRow = -1
 
   @Prop({mutable: true}) theme: string = ''
-  @Prop({mutable: true}) gridWidth: string = '100%'
-  @Prop({mutable: true}) gridHeight: string = '100%'
-  @Prop({mutable: true}) pixelSize: string = '8px'
-  @Prop({mutable: true}) textWidth: string = '70px'
+  @Prop({mutable: true}) gridwidth: string = '100%'
+  @Prop({mutable: true}) gridheight: string = '100%'
+  @Prop({mutable: true}) pixelsize: string = '8px'
+  @Prop({mutable: true}) textwidth: string = '70px'
 
 
   public verticalHoverDiv!: HTMLElement
@@ -131,14 +131,14 @@ export class FullConnectivityGrid {
   }
 
   rangeChange(event) {
-    this.pixelSize = event.target.value + 'px'
+    this.pixelsize = event.target.value + 'px'
     console.log(event)
   }
 
   mouseEnterOnItem(j, i) {
     this.hoveringColumn = j
     this.hoveringRow = i
-    const pixelSizeNumber = Number.parseInt(this.pixelSize)
+    const pixelSizeNumber = Number.parseInt(this.pixelsize)
     this.verticalHoverDiv.style["left"] = (this.hoveringColumn * pixelSizeNumber + pixelSizeNumber/2) + 'px'
     this.horizontalHoverDiv.style["top"] = (this.hoveringRow * pixelSizeNumber + pixelSizeNumber/2) + 'px'
   }
@@ -153,19 +153,19 @@ export class FullConnectivityGrid {
 
   render() {
 
-    const diagramContent = this.allConnectedAreas &&  <div style={{width: this.gridWidth, display: 'inline-grid', height: this.gridWidth, position:'relative', overflow: 'auto'}}>
+    const diagramContent = this.allConnectedAreas &&  <div style={{width: this.gridwidth, display: 'inline-grid', height: this.gridheight, position:'relative', overflow: 'auto'}}>
       {/*<div style={{display: 'flex', flexDirection: 'column'}}>*/}
 
       <div class={'verticalSticky columnHeader ' + (this.theme === 'light'? 'bg-light' : 'bg-dark')}
-           style={{marginLeft: this.textWidth, zIndex: '2'}}>
+           style={{marginLeft: this.textwidth, zIndex: '2'}}>
 
         {this.allConnectedAreas.map((rowAreas) => (
           <div class={'rotated'} style={{
-            height: this.textWidth,
-            minWidth: this.pixelSize,
-            maxWidth: this.pixelSize,
+            height: this.textwidth,
+            minWidth: this.pixelsize,
+            maxWidth: this.pixelsize,
           }}>
-            <small style={{overflow: 'hidden', whiteSpace: 'nowrap', fontSize: this.pixelSize}}>
+            <small style={{overflow: 'hidden', whiteSpace: 'nowrap', fontSize: this.pixelsize}}>
               {this.cleanAreaNameForDiagram(rowAreas.sourceArea)}
             </small>
           </div>
@@ -178,14 +178,14 @@ export class FullConnectivityGrid {
         {this.allConnectedAreas.map((rowAreas) => (
           <div style={{
             textAlign: 'right',
-            minWidth: this.textWidth,
+            minWidth: this.textwidth,
             display: 'flex',
             justifyContent: 'flex-end',
-            maxWidth: this.textWidth,
-            minHeight: this.pixelSize,
-            maxHeight: this.pixelSize,
+            maxWidth: this.textwidth,
+            minHeight: this.pixelsize,
+            maxHeight: this.pixelsize,
           }}>
-            <small style={{fontSize: this.pixelSize, overflow: 'hidden', whiteSpace: 'nowrap',}}>
+            <small style={{fontSize: this.pixelsize, overflow: 'hidden', whiteSpace: 'nowrap',}}>
               {this.cleanAreaNameForDiagram(rowAreas.sourceArea)}
             </small>
           </div>))}
@@ -205,8 +205,8 @@ export class FullConnectivityGrid {
                   <div
                     class={'disable-select hoverBorder'}
                     style={{
-                      minWidth: this.pixelSize, maxWidth: this.pixelSize,
-                      minHeight: this.pixelSize, maxHeight: this.pixelSize,
+                      minWidth: this.pixelsize, maxWidth: this.pixelsize,
+                      minHeight: this.pixelsize, maxHeight: this.pixelsize,
                       backgroundColor: this.getConnectionColor(rowAreas, columnAreas),
                       borderColor: this.theme === 'light'? 'black' : 'white'
                     }}
@@ -230,12 +230,12 @@ export class FullConnectivityGrid {
           type="range"
           min="5"
           max="20"
-          value={Number.parseInt(this.pixelSize)}
+          value={Number.parseInt(this.pixelsize)}
           onInput={(event) => this.rangeChange(event)}>
         </input>
       </div>
       <div style={{position: 'relative'}}>
-        <div style={{position: 'absolute', width: this.textWidth, height: this.textWidth, backgroundColor: 'red', zIndex: '100'}}
+        <div style={{position: 'absolute', width: this.textwidth, height: this.textwidth, backgroundColor: 'red', zIndex: '100'}}
              class={(this.theme === 'light'? 'bg-light' : 'bg-dark')}>&nbsp;</div>
         {this.dataIsLoading ? <div class="d-flex justify-content-center">
           <div class={(this.theme === 'light' ? 'loader-color-light' : 'loader-color-black') + ' loader'}>Loading...
