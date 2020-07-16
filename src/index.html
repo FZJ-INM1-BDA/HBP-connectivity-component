@@ -12,6 +12,13 @@
 <body>
 
 
+<div style="display:flex;">
+<full-connectivity-grid
+  grid-width="800px"
+  grid-height="800px"
+  theme="dark">
+</full-connectivity-grid>
+
 
 <hbp-connectivity-matrix-row
   style="height: 800px"
@@ -25,11 +32,11 @@
   show-title = "true"
   show-toolbar = "true"
   custom-dataset-selector = "true"
-  custom-height="500px"
 >
   <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
   <div slot="connectedRegionMenu"> <button>Click</button> Menu Goes Here </div>
 </hbp-connectivity-matrix-row>
+</div>
 
 </body>
 <script>
