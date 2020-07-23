@@ -7,21 +7,26 @@
 
 ## Properties
 
-| Property                | Attribute                 | Description | Type     | Default |
-| ----------------------- | ------------------------- | ----------- | -------- | ------- |
-| `customDatasetSelector` | `custom-dataset-selector` |             | `string` | `''`    |
-| `customHeight`          | `custom-height`           |             | `string` | `''`    |
-| `customWidth`           | `custom-width`            |             | `string` | `''`    |
-| `datasetUrl`            | `dataset-url`             |             | `string` | `''`    |
-| `loadurl`               | `loadurl`                 |             | `string` | `''`    |
-| `region`                | `region`                  |             | `string` | `''`    |
-| `showDatasetName`       | `show-dataset-name`       |             | `string` | `''`    |
-| `showDescription`       | `show-description`        |             | `string` | `''`    |
-| `showExport`            | `show-export`             |             | `string` | `''`    |
-| `showSource`            | `show-source`             |             | `string` | `''`    |
-| `showTitle`             | `show-title`              |             | `string` | `''`    |
-| `showToolbar`           | `show-toolbar`            |             | `string` | `''`    |
-| `theme`                 | `theme`                   |             | `string` | `''`    |
+| Property                | Attribute                 | Description | Type                     | Default     |
+| ----------------------- | ------------------------- | ----------- | ------------------------ | ----------- |
+| `_tools_custom`         | --                        |             | `CustomTool[]`           | `undefined` |
+| `customDatasetSelector` | `custom-dataset-selector` |             | `string`                 | `''`        |
+| `customHeight`          | `custom-height`           |             | `string`                 | `''`        |
+| `customWidth`           | `custom-width`            |             | `string`                 | `''`        |
+| `datasetUrl`            | `dataset-url`             |             | `string`                 | `''`        |
+| `hideExportView`        | `hide-export-view`        |             | `string`                 | `undefined` |
+| `loadurl`               | `loadurl`                 |             | `string`                 | `''`        |
+| `region`                | `region`                  |             | `string`                 | `''`        |
+| `showDatasetName`       | `show-dataset-name`       |             | `string`                 | `''`        |
+| `showDescription`       | `show-description`        |             | `string`                 | `''`        |
+| `showExport`            | `show-export`             |             | `string`                 | `''`        |
+| `showSource`            | `show-source`             |             | `string`                 | `''`        |
+| `showTitle`             | `show-title`              |             | `string`                 | `''`        |
+| `showToolbar`           | `show-toolbar`            |             | `string`                 | `''`        |
+| `theme`                 | `theme`                   |             | `string`                 | `''`        |
+| `tools_custom`          | `tools_custom`            |             | `CustomTool[] \| string` | `undefined` |
+| `tools_showallresults`  | `tools_showallresults`    |             | `string`                 | `''`        |
+| `tools_showlog`         | `tools_showlog`           |             | `string`                 | `''`        |
 
 
 ## Events
@@ -30,7 +35,21 @@
 | -------------------------- | ----------- | ------------------ |
 | `collapsedMenuChanged`     |             | `CustomEvent<any>` |
 | `connectivityDataReceived` |             | `CustomEvent<any>` |
+| `customToolEvent`          |             | `CustomEvent<any>` |
 | `datasetDataReceived`      |             | `CustomEvent<any>` |
+
+
+## Methods
+
+### `downloadCSV() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies

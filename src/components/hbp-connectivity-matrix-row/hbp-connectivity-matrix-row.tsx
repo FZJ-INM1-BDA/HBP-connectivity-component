@@ -50,7 +50,7 @@ export class HbpConnectivityMatrixRow {
   @Prop({mutable: true}) tools_custom: CustomTool[] | string
   @Prop({mutable: true}) hideExportView: string
 
-  exportComponentElement!: HTMLExportConnectivityDiagramElement
+  public exportComponentElement!: HTMLExportConnectivityDiagramElement
 
   @Watch('region')
   regionChanged(newValue: string, oldValue: string) {
@@ -284,7 +284,6 @@ export class HbpConnectivityMatrixRow {
                 + ' container d-block d-flex flex-column p-2 '}
           style={{height: this.customHeight? this.customHeight : '100%', width: this.customWidth? this.customWidth : '100%'}}>
           <slot name="header"/>
-          <br class="position-relative mb-2"> </br>
           <div class="d-flex flex-column">
             {this.showTitle === 'true'? <h5>Connectivity Browser</h5> : null}
             {(this.showDatasetName === 'true' && !this.customDatasetSelector) && <div><span style={{opacity: '0.6'}}>Dataset:</span> {this.datasetName}</div>}

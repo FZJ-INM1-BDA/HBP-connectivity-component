@@ -10,11 +10,23 @@
 | Property         | Attribute         | Description | Type     | Default     |
 | ---------------- | ----------------- | ----------- | -------- | ----------- |
 | `connectedAreas` | `connected-areas` |             | `any`    | `undefined` |
+| `datasetInfo`    | `dataset-info`    |             | `any`    | `undefined` |
 | `el`             | `el`              |             | `any`    | `undefined` |
+| `hideView`       | `hide-view`       |             | `string` | `undefined` |
 | `theme`          | `theme`           |             | `string` | `undefined` |
 
 
 ## Methods
+
+### `downloadCSV() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 ### `downloadPng() => Promise<void>`
 
