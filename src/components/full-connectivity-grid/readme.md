@@ -7,13 +7,13 @@
 
 ## Properties
 
-| Property     | Attribute     | Description | Type     | Default  |
-| ------------ | ------------- | ----------- | -------- | -------- |
-| `gridHeight` | `grid-height` |             | `string` | `'100%'` |
-| `gridWidth`  | `grid-width`  |             | `string` | `'100%'` |
-| `pixelSize`  | `pixel-size`  |             | `string` | `'8px'`  |
-| `textWidth`  | `text-width`  |             | `string` | `'70px'` |
-| `theme`      | `theme`       |             | `string` | `''`     |
+| Property     | Attribute    | Description | Type     | Default  |
+| ------------ | ------------ | ----------- | -------- | -------- |
+| `gridheight` | `gridheight` |             | `string` | `'100%'` |
+| `gridwidth`  | `gridwidth`  |             | `string` | `'100%'` |
+| `pixelsize`  | `pixelsize`  |             | `string` | `'8px'`  |
+| `textwidth`  | `textwidth`  |             | `string` | `'70px'` |
+| `theme`      | `theme`      |             | `string` | `''`     |
 
 
 ## Events

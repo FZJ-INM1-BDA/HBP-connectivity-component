@@ -18,10 +18,10 @@ export namespace Components {
     'theme': string;
   }
   interface FullConnectivityGrid {
-    'gridHeight': string;
-    'gridWidth': string;
-    'pixelSize': string;
-    'textWidth': string;
+    'gridheight': string;
+    'gridwidth': string;
+    'pixelsize': string;
+    'textwidth': string;
     'theme': string;
   }
   interface HbpConnectivityMatrixRow {
@@ -75,11 +75,11 @@ declare namespace LocalJSX {
     'theme'?: string;
   }
   interface FullConnectivityGrid {
-    'gridHeight'?: string;
-    'gridWidth'?: string;
+    'gridheight'?: string;
+    'gridwidth'?: string;
     'onConnectivityDataReceived'?: (event: CustomEvent<any>) => void;
-    'pixelSize'?: string;
-    'textWidth'?: string;
+    'pixelsize'?: string;
+    'textwidth'?: string;
     'theme'?: string;
   }
   interface HbpConnectivityMatrixRow {
