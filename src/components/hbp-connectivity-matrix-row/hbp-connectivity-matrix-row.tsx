@@ -1,4 +1,4 @@
-import {Component, h, Element, State, Prop, Watch, EventEmitter} from "@stencil/core";
+import {Component, h, Element, State, Prop, Watch, EventEmitter, Method} from "@stencil/core";
 
 @Component({
   tag: 'hbp-connectivity-matrix-row',
@@ -27,6 +27,8 @@ export class HbpConnectivityMatrixRow {
   @Event({bubbles: true, composed: true}) collapsedMenuChanged: EventEmitter<any>
   // @ts-ignore
   @Event({bubbles: true, composed: true}) datasetDataReceived: EventEmitter<any>
+  // @ts-ignore
+  @Event({bubbles: true, composed: true}) customToolEvent: EventEmitter<any>
 
 
   @Prop({mutable: true}) theme: string = ''
@@ -42,6 +44,13 @@ export class HbpConnectivityMatrixRow {
   @Prop({mutable: true, reflectToAttr: true}) customWidth: string = ''
   @Prop({mutable: true}) customDatasetSelector: string = ''
   @Prop({mutable: true, reflectToAttr: true}) region: string = ''
+  @Prop({mutable: true}) tools_showlog: string = ''
+  @Prop({mutable: true}) tools_showallresults: string = ''
+  @Prop({mutable: true}) _tools_custom: CustomTool[]
+  @Prop({mutable: true}) tools_custom: CustomTool[] | string
+  @Prop({mutable: true}) hideExportView: string
+
+  exportComponentElement!: HTMLExportConnectivityDiagramElement
 
   @Watch('region')
   regionChanged(newValue: string, oldValue: string) {
@@ -63,11 +72,26 @@ export class HbpConnectivityMatrixRow {
 
     }
   }
+  @Watch('tools_custom')
+  arrayDataWatcher(newValue: CustomTool[] | string) {
+    if (typeof newValue === 'string') {
+      this._tools_custom = JSON.parse(newValue)
+    }
+    else {
+      this._tools_custom = newValue
+    }
+  }
+
+  @Method()
+  downloadCSV() {
+    this.exportComponentElement.downloadCSV()
+  }
 
   componentWillLoad() {
     this.dataIsLoading = true
     this.getConnectedAreas(this.region)
     this.getDatasetInfo()
+    this.arrayDataWatcher(this.tools_custom)
   }
 
   getDatasetInfo = async () => {
@@ -149,6 +173,30 @@ export class HbpConnectivityMatrixRow {
     return area
   }
 
+  customToolsElement(tool) {
+    if (tool.type) {
+      if (tool.type === 'checkbox') {
+        return <div class="mr-1 ml-1 cp"
+                    onClick={() => this.customToolEvent.emit(tool)}>
+          <input checked={tool.checked}
+                 id={tool.name}
+                 class="mr-1"
+                 type="checkbox"/>
+          <span>{tool.name}</span>
+        </div>
+      } else if (tool.type === 'button') {
+        return <div class="mr-1 ml-1 cp">
+          <button type="button"
+                  class="btn btn-secondary btn-sm mr-2"
+                  id={tool.name}
+                  onClick={() => this.customToolEvent.emit(tool)}>
+            <span>{tool.name}</span>
+          </button>
+        </div>
+      }
+    }
+  }
+
   render() {
 
     const asyncQuerySelector = async (node, query) => {
@@ -190,7 +238,7 @@ export class HbpConnectivityMatrixRow {
                   backgroundColor: 'rgb(' + r.color.r + ',' + r.color.g + ',' + r.color.b + ')'
                 }}>
                   <small class={(this.theme === 'light' ? 'text-white' : 'text-black') + ' mt-n1 ml-1 text-shadow'}>
-                    {this.overConnectedAreaIndex === i || this.showAllConnectionNumbers ? this.numberToForChart(r.numberOfConnections) : ''}
+                    {this.overConnectedAreaIndex === i || this.showAllConnectionNumbers ? r.numberOfConnections : ''}
                   </small>
                 </div>
 
@@ -282,23 +330,30 @@ export class HbpConnectivityMatrixRow {
           </div>
           <span class="mi mi-face"></span>
 
-          {this.showToolbar && <div class="d-flex">
-            <div class="mt-2 mr-3 mb-2 cp" onClick={() => this.showLog10 = !this.showLog10}>
+          {this.showToolbar && <small class="d-flex align-items-center flex-wrap">
+            {this.tools_showlog && <div class="mt-2 mr-3 mb-2 cp" onClick={() => this.showLog10 = !this.showLog10}>
               <input checked={this.showLog10}
                      id="log-10-check-box"
                      class="mr-2"
                      type="checkbox"/>
               <span>Log10</span>
-            </div>
+            </div>}
 
-            <div class="mt-2 mb-2 cp" onClick={() => this.showAllConnectionNumbers = !this.showAllConnectionNumbers}>
+            {this.tools_showallresults && <div class="mt-2 mb-2 cp" onClick={() => this.showAllConnectionNumbers = !this.showAllConnectionNumbers}>
               <input checked={this.showAllConnectionNumbers}
                      id="log-10-check-box"
-                     class="mr-2"
+                     class="mr-1"
                      type="checkbox"/>
               <span>All results</span>
-            </div>
-          </div>}
+            </div>}
+
+            {this.tools_custom && this.tools_custom.length ?
+              this._tools_custom.map((tool) => (
+                this.customToolsElement(tool)
+              ))
+              : null
+            }
+          </small>}
 
           {this.dataIsLoading ? <div class="d-flex justify-content-center">
             <div class={(this.theme === 'light' ? 'loader-color-light' : 'loader-color-black') + ' loader'}>Loading...
@@ -307,9 +362,12 @@ export class HbpConnectivityMatrixRow {
 
           {this.showExport === 'true' &&
           <export-connectivity-diagram
+            ref={(el) => this.exportComponentElement= el as HTMLExportConnectivityDiagramElement}
             el={this.el}
             theme={this.theme}
             connectedAreas={this.connectedAreas}
+            hideView={this.hideExportView}
+            datasetInfo={{name: this.datasetName, description: this.datasetDescription}}
           />}
 
         </div>
@@ -346,4 +404,10 @@ export class HbpConnectivityMatrixRow {
       return this.clamp(-4.0 * x + 2.5);
     }
   }
+}
+
+export interface CustomTool {
+  name: string
+  type: string
+  checked: boolean
 }

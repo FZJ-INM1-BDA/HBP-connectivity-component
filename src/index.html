@@ -26,12 +26,17 @@
   region="Area PFcm (IPL) - right hemisphere"
   theme="dark"
   loadurl="https://connectivityquery-connectivity.apps-dev.hbp.eu/connectivity"
-  show-description = "true"
+  dataset-url="https://connectivityquery-connectivity.apps-dev.hbp.eu/studies"
+  show-description = "false"
   show-export = "true"
-  show-source = "true"
-  show-title = "true"
+  show-source = "false"
+  show-title = "false"
   show-toolbar = "true"
   custom-dataset-selector = "true"
+  custom-width="400px"
+  tools_showlog="true"
+  tools_custom='[{"name": "Apply colors to viewer", "type": "checkbox", "checked": false}, {"name": "export csv", "type": "button"}]'
+  hide-export-view="true"
 >
   <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
   <div slot="connectedRegionMenu"> <button>Click</button> Menu Goes Here </div>
@@ -42,10 +47,16 @@
 <script>
   const a = document.querySelector('hbp-connectivity-matrix-row')
   a.addEventListener('connectivityDataReceived', event=> {
-      console.log(event)
+      // console.log(event)
   })
   a.addEventListener('collapsedMenuChanged', event=> {
+      // console.log(event)
+  })
+  a.addEventListener('customToolEvent', event=> {
       console.log(event)
+    if (event.detail.name === 'export csv') {
+      a.downloadCSV()
+    }
   })
 </script>
 </html>
