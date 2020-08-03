@@ -1,4 +1,4 @@
-import {Component, h, EventEmitter, State, Prop} from "@stencil/core";
+import {Component, h, EventEmitter, State, Prop, Method, Element} from "@stencil/core";
 
 @Component({
   tag: 'full-connectivity-grid',
@@ -6,8 +6,7 @@ import {Component, h, EventEmitter, State, Prop} from "@stencil/core";
   shadow: true
 })
 export class FullConnectivityGrid {
-
-
+  @Element() el: HTMLElement
   @State() allConnectedAreas: any
   @State() overConnectedAreaIndex = -1
 
@@ -18,13 +17,20 @@ export class FullConnectivityGrid {
 
   hoveringColumn = -1
   hoveringRow = -1
+  public exportFullConnectivityElement!: HTMLExportFullConnectivityElement
 
   @Prop({mutable: true}) theme: string = ''
+  @Prop({mutable: true}) datasetUrl: string = ''
+  @Prop({mutable: true}) onlyExport: string = ''
   @Prop({mutable: true}) gridwidth: string = '100%'
   @Prop({mutable: true}) gridheight: string = '100%'
   @Prop({mutable: true}) pixelsize: string = '8px'
   @Prop({mutable: true}) textwidth: string = '70px'
 
+  @Method()
+  downloadCSV() {
+    this.exportFullConnectivityElement.downloadFUllConnectivityCsv()
+  }
 
   public verticalHoverDiv!: HTMLElement
   public horizontalHoverDiv!: HTMLElement
@@ -35,6 +41,7 @@ export class FullConnectivityGrid {
   componentWillLoad() {
     this.dataIsLoading = true
     this.getConnectedAreas()
+    this.getDatasetInfo()
   }
 
 
@@ -130,9 +137,27 @@ export class FullConnectivityGrid {
     }
   }
 
+  getDatasetInfo = async () => {
+    this.fetchDatasetInfo()
+      .then(resp => {
+        this.datasetDescription = resp.description
+        this.datasetName = resp.title
+      })
+  }
+
+  fetchDatasetInfo = async () => {
+    const responce = await fetch(this.datasetUrl,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    return responce.json()
+  }
+
   rangeChange(event) {
     this.pixelsize = event.target.value + 'px'
-    console.log(event)
   }
 
   mouseEnterOnItem(j, i) {
@@ -224,7 +249,7 @@ export class FullConnectivityGrid {
 
 
     return [
-      <div class={this.theme === 'light'? 'bg-light' : 'bg-dark'}>
+      this.onlyExport? <div class={this.theme === 'light'? 'bg-light' : 'bg-dark'}>
       <div>
         <input
           type="range"
@@ -243,7 +268,17 @@ export class FullConnectivityGrid {
         </div> : diagramContent}
 
       </div>
-      </div>
+
+      </div> :
+        <div>
+        <export-full-connectivity connections={this.allConnectedAreas}
+                                  datasetInfo={{name: this.datasetName, description: this.datasetDescription}}>
+                                  ref={(el) => this.exportFullConnectivityElement = el as HTMLExportFullConnectivityElement}
+                                  el={this.el}
+        </export-full-connectivity>
+          <button onClick={() => this.downloadCSV()}>asd </button>
+
+        </div>
     ]
   }
 

@@ -15,11 +15,21 @@ export namespace Components {
         "el": any;
         "getCSVData": () => Promise<unknown>;
         "hideView": string;
+        "regionInfo": any;
         "theme": string;
     }
+    interface ExportFullConnectivity {
+        "connections": any;
+        "datasetInfo": any;
+        "downloadFUllConnectivityCsv": () => Promise<void>;
+        "getFullConnectivityCSVData": () => Promise<unknown>;
+    }
     interface FullConnectivityGrid {
+        "datasetUrl": string;
+        "downloadCSV": () => Promise<void>;
         "gridheight": string;
         "gridwidth": string;
+        "onlyExport": string;
         "pixelsize": string;
         "textwidth": string;
         "theme": string;
@@ -53,6 +63,12 @@ declare global {
         prototype: HTMLExportConnectivityDiagramElement;
         new (): HTMLExportConnectivityDiagramElement;
     };
+    interface HTMLExportFullConnectivityElement extends Components.ExportFullConnectivity, HTMLStencilElement {
+    }
+    var HTMLExportFullConnectivityElement: {
+        prototype: HTMLExportFullConnectivityElement;
+        new (): HTMLExportFullConnectivityElement;
+    };
     interface HTMLFullConnectivityGridElement extends Components.FullConnectivityGrid, HTMLStencilElement {
     }
     var HTMLFullConnectivityGridElement: {
@@ -67,6 +83,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "export-connectivity-diagram": HTMLExportConnectivityDiagramElement;
+        "export-full-connectivity": HTMLExportFullConnectivityElement;
         "full-connectivity-grid": HTMLFullConnectivityGridElement;
         "hbp-connectivity-matrix-row": HTMLHbpConnectivityMatrixRowElement;
     }
@@ -77,12 +94,19 @@ declare namespace LocalJSX {
         "datasetInfo"?: any;
         "el"?: any;
         "hideView"?: string;
+        "regionInfo"?: any;
         "theme"?: string;
     }
+    interface ExportFullConnectivity {
+        "connections"?: any;
+        "datasetInfo"?: any;
+    }
     interface FullConnectivityGrid {
+        "datasetUrl"?: string;
         "gridheight"?: string;
         "gridwidth"?: string;
         "onConnectivityDataReceived"?: (event: CustomEvent<any>) => void;
+        "onlyExport"?: string;
         "pixelsize"?: string;
         "textwidth"?: string;
         "theme"?: string;
@@ -113,6 +137,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "export-connectivity-diagram": ExportConnectivityDiagram;
+        "export-full-connectivity": ExportFullConnectivity;
         "full-connectivity-grid": FullConnectivityGrid;
         "hbp-connectivity-matrix-row": HbpConnectivityMatrixRow;
     }
@@ -122,6 +147,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "export-connectivity-diagram": LocalJSX.ExportConnectivityDiagram & JSXBase.HTMLAttributes<HTMLExportConnectivityDiagramElement>;
+            "export-full-connectivity": LocalJSX.ExportFullConnectivity & JSXBase.HTMLAttributes<HTMLExportFullConnectivityElement>;
             "full-connectivity-grid": LocalJSX.FullConnectivityGrid & JSXBase.HTMLAttributes<HTMLFullConnectivityGridElement>;
             "hbp-connectivity-matrix-row": LocalJSX.HbpConnectivityMatrixRow & JSXBase.HTMLAttributes<HTMLHbpConnectivityMatrixRowElement>;
         }

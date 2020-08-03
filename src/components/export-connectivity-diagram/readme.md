@@ -13,6 +13,7 @@
 | `datasetInfo`    | `dataset-info`    |             | `any`    | `undefined` |
 | `el`             | `el`              |             | `any`    | `undefined` |
 | `hideView`       | `hide-view`       |             | `string` | `undefined` |
+| `regionInfo`     | `region-info`     |             | `any`    | `undefined` |
 | `theme`          | `theme`           |             | `string` | `undefined` |
 
 

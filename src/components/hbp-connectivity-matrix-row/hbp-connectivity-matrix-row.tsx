@@ -366,6 +366,7 @@ export class HbpConnectivityMatrixRow {
             theme={this.theme}
             connectedAreas={this.connectedAreas}
             hideView={this.hideExportView}
+            regionInfo={{name: this.region, description: this.datasetDescription}}
             datasetInfo={{name: this.datasetName, description: this.datasetDescription}}
           />}
 

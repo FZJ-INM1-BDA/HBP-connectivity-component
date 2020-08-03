@@ -15,6 +15,7 @@ export class ExportConnectivityDiagram {
   @Prop({mutable: true}) el: any
   @Prop({mutable: true}) connectedAreas: any
   @Prop({mutable: true}) hideView: string
+  @Prop({mutable: true}) regionInfo: any
   @Prop({mutable: true}) datasetInfo: any
 
   render() {
@@ -46,15 +47,25 @@ export class ExportConnectivityDiagram {
   }
 
   @Method({mutable: true, reflectToAttr: true}) downloadCSV() {
-
+    //ToDo change to dynamic description
+    const parcellationDescription = '\nThe region definition is taken from the Julich-Brain Cytoarchitectonic Atlas (Amunts and Zilles, 2015). The parcellation is derived from the individual probability maps (PMs) of the cytoarchitectonic regions released in the Julich-Brain Atlas, that are further combined into a Maximum Probability Map (MPM). The MPM is calculated by considering for each voxel the probability of all cytoarchitectonic areas released in the atlas, and determining the most probable assignment (Eickhoff 2005). Note that methodological improvements and integration of new brain structures may lead to small deviations in earlier released datasets.\n        \nMohlberg H, Bludau S, Caspers S, Eickhoff SB, Amunts K '
+    const sanitizedRegionName = this.regionInfo.name.replace(/[\\\/:\*\?"<>\|]/g, "").trim()
     this.getCSVData().then(cs => {
       const zip = new JSZip();
-      zip.file("data.csv", cs.toString())
-      zip.file("dataset.txt", "Dataset name: " + this.datasetInfo.name + "\nDescription: " + this.datasetInfo.description)
+      zip.file(`Connectivity profile for ${sanitizedRegionName}.csv`, cs.toString())
+      zip.file("README.txt",
+        `The connectivity profile has been extracted from the following dataset:
+        \n${this.datasetInfo.name} \n${this.datasetInfo.description} \n${parcellationDescription}`)
       zip.generateAsync({
         type: "base64"
-      }).then(function(content) {
-        window.location.href = "data:application/zip;base64," + content
+      }).then(content => {
+        // const fileName = this.regionInfo.name.replace(/[\\\/:\*\?"<>\|]/g, "").trim()
+        const link = document.createElement('a')
+        link.href = 'data:application/zip;base64,' + content
+        link.download = `${sanitizedRegionName}.zip`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
       })
 
       // const encodedUri = encodeURI(cs as string)
