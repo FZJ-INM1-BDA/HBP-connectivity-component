@@ -21,7 +21,8 @@ export namespace Components {
     interface ExportFullConnectivity {
         "connections": any;
         "datasetInfo": any;
-        "downloadFUllConnectivityCsv": () => Promise<void>;
+        "downloadFullConnectivityCsv": () => Promise<void>;
+        "el": any;
         "getFullConnectivityCSVData": () => Promise<unknown>;
     }
     interface FullConnectivityGrid {
@@ -100,6 +101,7 @@ declare namespace LocalJSX {
     interface ExportFullConnectivity {
         "connections"?: any;
         "datasetInfo"?: any;
+        "el"?: any;
     }
     interface FullConnectivityGrid {
         "datasetUrl"?: string;

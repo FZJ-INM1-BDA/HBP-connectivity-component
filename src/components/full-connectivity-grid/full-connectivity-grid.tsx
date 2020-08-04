@@ -8,6 +8,7 @@ import {Component, h, EventEmitter, State, Prop, Method, Element} from "@stencil
 export class FullConnectivityGrid {
   @Element() el: HTMLElement
   @State() allConnectedAreas: any
+  @State() unfilteredConnections: any
   @State() overConnectedAreaIndex = -1
 
   @State() dataIsLoading = false
@@ -29,7 +30,7 @@ export class FullConnectivityGrid {
 
   @Method()
   downloadCSV() {
-    this.exportFullConnectivityElement.downloadFUllConnectivityCsv()
+    this.exportFullConnectivityElement.downloadFullConnectivityCsv()
   }
 
   public verticalHoverDiv!: HTMLElement
@@ -49,7 +50,7 @@ export class FullConnectivityGrid {
     this.fetchConnectedAreas()
       .then(res =>
         Object.keys(res).map(key => {
-          return {
+            return {
             sourceArea: key,
             connectedAreas:
               Object.keys(res[key]).map(k => {
@@ -58,11 +59,14 @@ export class FullConnectivityGrid {
                   numberOfConnections: res[key][k]
                 }
               })
-                .filter(f => f.numberOfConnections > 0)
-                .sort((a, b) => +b.numberOfConnections - +a.numberOfConnections)
           }
         })
       )
+      .then(res => {
+        this.unfilteredConnections = res
+        return res.filter(f => f['numberOfConnections'] > 0)
+          .sort((a, b) => +b['numberOfConnections'] - +a['numberOfConnections'])
+      })
       .then(addColorToAreasToAllConnections => {
         let maxConnection = 0
         addColorToAreasToAllConnections.forEach(addColorAreas => {
@@ -271,13 +275,12 @@ export class FullConnectivityGrid {
 
       </div> :
         <div>
-        <export-full-connectivity connections={this.allConnectedAreas}
-                                  datasetInfo={{name: this.datasetName, description: this.datasetDescription}}>
-                                  ref={(el) => this.exportFullConnectivityElement = el as HTMLExportFullConnectivityElement}
-                                  el={this.el}
-        </export-full-connectivity>
-          <button onClick={() => this.downloadCSV()}>asd </button>
-
+          <export-full-connectivity
+            ref={(el) => this.exportFullConnectivityElement = el as HTMLExportFullConnectivityElement}
+            el={this.el}
+            connections={this.unfilteredConnections}
+            datasetInfo={{name: this.datasetName, description: this.datasetDescription}}>
+          </export-full-connectivity>
         </div>
     ]
   }
