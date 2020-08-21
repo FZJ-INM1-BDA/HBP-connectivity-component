@@ -62,7 +62,7 @@ export class ExportConnectivityDiagram {
         // const fileName = this.regionInfo.name.replace(/[\\\/:\*\?"<>\|]/g, "").trim()
         const link = document.createElement('a')
         link.href = 'data:application/zip;base64,' + content
-        link.download = `${sanitizedRegionName}.zip`
+        link.download = `Connectivity profile for ${sanitizedRegionName}.zip`
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)

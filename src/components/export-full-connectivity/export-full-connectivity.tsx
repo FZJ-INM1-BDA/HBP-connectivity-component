@@ -17,16 +17,16 @@ export class ExportFullConnectivity {
       const sanitizedFileName = this.datasetInfo.name.replace(/[\\\/:\*\?"<>\|]/g, "").trim()
 
       const zip = new JSZip();
-      zip.file(`Connectivity profile by ${sanitizedFileName}.csv`, cs.toString())
+      zip.file(`Connectivity matrix of ${sanitizedFileName}.csv`, cs.toString())
       zip.file("README.txt",
-        `The connectivity profile has been extracted from the following dataset:
+        `The connectivity matrix has been extracted from the following dataset:
         \n${this.datasetInfo.name} \n${this.datasetInfo.description} \n${parcellationDescription}`)
       zip.generateAsync({
         type: "base64"
       }).then(function(content) {
         const link = document.createElement('a')
         link.href = 'data:application/zip;base64,' + content
-        link.download = `Connectivity profile by ${sanitizedFileName}.zip`
+        link.download = `Connectivity matrix of ${sanitizedFileName}.zip`
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
