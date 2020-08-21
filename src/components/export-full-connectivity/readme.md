@@ -11,11 +11,12 @@
 | ------------- | -------------- | ----------- | ----- | ----------- |
 | `connections` | `connections`  |             | `any` | `undefined` |
 | `datasetInfo` | `dataset-info` |             | `any` | `undefined` |
+| `el`          | `el`           |             | `any` | `undefined` |
 
 
 ## Methods
 
-### `downloadFUllConnectivityCsv() => Promise<void>`
+### `downloadFullConnectivityCsv() => Promise<void>`
 
 
 

@@ -193,6 +193,8 @@ export class HbpConnectivityMatrixRow {
             <span>{tool.name}</span>
           </button>
         </div>
+      } else if (tool.type === 'slot') {
+        return <slot name={tool.name}/>
       }
     }
   }
