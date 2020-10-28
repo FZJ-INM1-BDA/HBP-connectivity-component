@@ -60,6 +60,14 @@ export class HbpConnectivityMatrixRow {
     }
   }
 
+  @Watch('loadurl')
+  loadurlChanged(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+      this.collapseMenu = -1
+      this.getConnectedAreas(this.region)
+    }
+  }
+
   @Watch('customHeight')
   customHeightChanged(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
@@ -89,7 +97,7 @@ export class HbpConnectivityMatrixRow {
 
   componentWillLoad() {
     this.dataIsLoading = true
-    this.getConnectedAreas(this.region)
+    if (this.loadurl) this.getConnectedAreas(this.region)
     this.getDatasetInfo()
     this.arrayDataWatcher(this.tools_custom)
   }
