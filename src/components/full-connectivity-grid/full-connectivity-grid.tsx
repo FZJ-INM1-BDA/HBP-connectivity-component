@@ -1,4 +1,4 @@
-import {Component, h, EventEmitter, State, Prop, Method, Element} from "@stencil/core";
+import {Component, h, EventEmitter, State, Prop, Method, Element, Watch} from "@stencil/core";
 
 @Component({
   tag: 'full-connectivity-grid',
@@ -28,9 +28,21 @@ export class FullConnectivityGrid {
   @Prop({mutable: true}) pixelsize: string = '8px'
   @Prop({mutable: true}) textwidth: string = '70px'
 
+  @Prop({mutable: true}) loadurl: string = ''
+  @Prop({mutable: true}) name: string = ''
+  @Prop({mutable: true}) description: string = ''
+
+
   @Method()
   downloadCSV() {
     this.exportFullConnectivityElement.downloadFullConnectivityCsv()
+  }
+
+  @Watch('loadurl')
+  loadurlChanged(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+      this.getConnectedAreas()
+    }
   }
 
   public verticalHoverDiv!: HTMLElement
@@ -41,7 +53,7 @@ export class FullConnectivityGrid {
 
   componentWillLoad() {
     this.dataIsLoading = true
-    this.getConnectedAreas()
+    if (this.loadurl) this.getConnectedAreas()
     this.getDatasetInfo()
   }
 
@@ -105,7 +117,7 @@ export class FullConnectivityGrid {
 
 
   fetchConnectedAreas = async () => {
-    const response = await fetch('https://connectivityquery-connectivity.apps-dev.hbp.eu/connectivitywholebrain/21212',
+    const response = await fetch(this.loadurl,
       {
         method: 'GET',
         headers: {
@@ -279,7 +291,7 @@ export class FullConnectivityGrid {
             ref={(el) => this.exportFullConnectivityElement = el as HTMLExportFullConnectivityElement}
             el={this.el}
             connections={this.unfilteredConnections}
-            datasetInfo={{name: this.datasetName, description: this.datasetDescription}}>
+            datasetInfo={{name: this.name, description: this.description}}>
           </export-full-connectivity>
         </div>
     ]

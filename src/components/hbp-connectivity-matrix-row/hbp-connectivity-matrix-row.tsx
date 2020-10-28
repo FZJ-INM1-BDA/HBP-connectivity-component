@@ -134,13 +134,27 @@ export class HbpConnectivityMatrixRow {
       .then(addColorToAreas => {
         const logMax = Math.log(addColorToAreas[0].numberOfConnections)
         let colorAreas = []
+        
+        addColorToAreas.forEach((a,i) => {
+          if (a.name.includes(' - both hemispheres')) {
+
+            const rightTitle = a.name.replace(' - both hemispheres', ' - right hemisphere')
+            const rightHemisphereItemToAdd = {...a, name: rightTitle}
+            addColorToAreas.splice(i+1,0,rightHemisphereItemToAdd)
+
+            addColorToAreas[i] = {
+             ...addColorToAreas[i],
+             name: addColorToAreas[i].name.replace(' - both hemispheres', ' - left hemisphere')
+            }
+          }
+        })
         addColorToAreas.forEach((a) => {
           colorAreas.push({
             ...a,
             color: {
-              r: this.colormap_red(Math.log(a.numberOfConnections) / logMax),
-              g: this.colormap_green(Math.log(a.numberOfConnections) / logMax),
-              b: this.colormap_blue(Math.log(a.numberOfConnections) / logMax)
+              r: this.colormap_red(Math.log(a.numberOfConnections) / logMax || 1),
+              g: this.colormap_green(Math.log(a.numberOfConnections) / logMax || 1),
+              b: this.colormap_blue(Math.log(a.numberOfConnections) / logMax || 1)
             }
           })
         })
@@ -244,7 +258,7 @@ export class HbpConnectivityMatrixRow {
               <div class="w-100 flex-3 position-relative">
 
                 <div class="d-flex chart-bar" style={{
-                  width: +this.numberToForChart(r.numberOfConnections) / this.numberToForChart(this.connectedAreas[0].numberOfConnections) * 100 + '%',
+                  width: +this.numberToForChart(r.numberOfConnections) / (this.numberToForChart(this.connectedAreas[0].numberOfConnections) | 1) * 100 + '%',
                   backgroundColor: 'rgb(' + r.color.r + ',' + r.color.g + ',' + r.color.b + ')'
                 }}>
                   <small class={(this.theme === 'light' ? 'text-white' : 'text-black') + ' mt-n1 ml-1 text-shadow'}>
@@ -386,7 +400,8 @@ export class HbpConnectivityMatrixRow {
   }
 
   numberToForChart(number) {
-    return this.showLog10 ? Math.log10(number).toFixed(2) : number
+    const returnNumber = this.showLog10 ? Math.log10(number).toFixed(2) : number
+    return returnNumber < 0? 0 : returnNumber
   }
 
   clamp = val => Math.round(Math.max(0, Math.min(1.0, val)) * 255)

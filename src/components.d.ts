@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { CustomTool, } from "./components/hbp-connectivity-matrix-row/hbp-connectivity-matrix-row";
+import { CustomTool } from "./components/hbp-connectivity-matrix-row/hbp-connectivity-matrix-row";
 export namespace Components {
     interface ExportConnectivityDiagram {
         "connectedAreas": any;
@@ -27,9 +27,12 @@ export namespace Components {
     }
     interface FullConnectivityGrid {
         "datasetUrl": string;
+        "description": string;
         "downloadCSV": () => Promise<void>;
         "gridheight": string;
         "gridwidth": string;
+        "loadurl": string;
+        "name": string;
         "onlyExport": string;
         "pixelsize": string;
         "textwidth": string;
@@ -105,8 +108,11 @@ declare namespace LocalJSX {
     }
     interface FullConnectivityGrid {
         "datasetUrl"?: string;
+        "description"?: string;
         "gridheight"?: string;
         "gridwidth"?: string;
+        "loadurl"?: string;
+        "name"?: string;
         "onConnectivityDataReceived"?: (event: CustomEvent<any>) => void;
         "onlyExport"?: string;
         "pixelsize"?: string;
