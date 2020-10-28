@@ -152,9 +152,9 @@ export class HbpConnectivityMatrixRow {
           colorAreas.push({
             ...a,
             color: {
-              r: this.colormap_red(Math.log(a.numberOfConnections) / logMax || 1),
-              g: this.colormap_green(Math.log(a.numberOfConnections) / logMax || 1),
-              b: this.colormap_blue(Math.log(a.numberOfConnections) / logMax || 1)
+              r: this.colormap_red(Math.log(a.numberOfConnections) / logMax),
+              g: this.colormap_green(Math.log(a.numberOfConnections) / logMax),
+              b: this.colormap_blue(Math.log(a.numberOfConnections) / logMax)
             }
           })
         })
