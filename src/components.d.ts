@@ -10,10 +10,10 @@ export namespace Components {
     interface ExportConnectivityDiagram {
         "connectedAreas": any;
         "datasetInfo": any;
-        "downloadCSV": () => Promise<void>;
+        "downloadCSV": (floatConnectionNumbers: any) => Promise<void>;
         "downloadPng": () => Promise<void>;
         "el": any;
-        "getCSVData": () => Promise<unknown>;
+        "getCSVData": (floatConnectionNumbers: any) => Promise<unknown>;
         "hideView": string;
         "regionInfo": any;
         "theme": string;

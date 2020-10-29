@@ -51,6 +51,7 @@ export class HbpConnectivityMatrixRow {
   @Prop({mutable: true}) hideExportView: string
 
   public exportComponentElement!: HTMLExportConnectivityDiagramElement
+  floatConnectionNumbers = false
 
   @Watch('region')
   regionChanged(newValue: string, oldValue: string) {
@@ -92,7 +93,7 @@ export class HbpConnectivityMatrixRow {
 
   @Method()
   downloadCSV() {
-    this.exportComponentElement.downloadCSV()
+    this.exportComponentElement.downloadCSV(this.floatConnectionNumbers)
   }
 
   componentWillLoad() {
@@ -132,7 +133,9 @@ export class HbpConnectivityMatrixRow {
           .sort((a, b) => +b.numberOfConnections - +a.numberOfConnections)
       )
       .then(addColorToAreas => {
-        const logMax = Math.log(addColorToAreas[0].numberOfConnections)
+        this.floatConnectionNumbers = addColorToAreas[0].numberOfConnections<=1
+
+        const logMax = this.floatConnectionNumbers? addColorToAreas[0].numberOfConnections : Math.log(addColorToAreas[0].numberOfConnections)
         let colorAreas = []
         
         addColorToAreas.forEach((a,i) => {
@@ -152,9 +155,9 @@ export class HbpConnectivityMatrixRow {
           colorAreas.push({
             ...a,
             color: {
-              r: this.colormap_red(Math.log(a.numberOfConnections) / logMax),
-              g: this.colormap_green(Math.log(a.numberOfConnections) / logMax),
-              b: this.colormap_blue(Math.log(a.numberOfConnections) / logMax)
+              r: this.colormap_red(this.floatConnectionNumbers? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax),
+              g: this.colormap_green(this.floatConnectionNumbers? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax),
+              b: this.colormap_blue(this.floatConnectionNumbers? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax)
             }
           })
         })
@@ -354,8 +357,9 @@ export class HbpConnectivityMatrixRow {
           <span class="mi mi-face"></span>
 
           {this.showToolbar && <small class="d-flex align-items-center flex-wrap">
-            {this.tools_showlog && <div class="mt-2 mr-3 mb-2 cp" onClick={() => this.showLog10 = !this.showLog10}>
-              <input checked={this.showLog10}
+            {this.tools_showlog && <div class="mt-2 mr-3 mb-2 cp" onClick={() => !this.floatConnectionNumbers? this.showLog10 = !this.showLog10 : null}>
+              <input checked={this.showLog10 && !this.floatConnectionNumbers}
+                     disabled={this.floatConnectionNumbers}
                      id="log-10-check-box"
                      class="mr-2"
                      type="checkbox"/>
@@ -400,7 +404,7 @@ export class HbpConnectivityMatrixRow {
   }
 
   numberToForChart(number) {
-    const returnNumber = this.showLog10 ? Math.log10(number).toFixed(2) : number
+    const returnNumber = this.showLog10 && !this.floatConnectionNumbers ? Math.log10(number).toFixed(2) : number
     return returnNumber < 0? 0 : returnNumber
   }
 
