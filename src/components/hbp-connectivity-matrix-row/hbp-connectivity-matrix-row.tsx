@@ -137,7 +137,7 @@ export class HbpConnectivityMatrixRow {
 
         const logMax = this.floatConnectionNumbers? addColorToAreas[0].numberOfConnections : Math.log(addColorToAreas[0].numberOfConnections)
         let colorAreas = []
-        
+
         addColorToAreas.forEach((a,i) => {
           if (a.name.includes(' - both hemispheres')) {
 
@@ -261,7 +261,7 @@ export class HbpConnectivityMatrixRow {
               <div class="w-100 flex-3 position-relative">
 
                 <div class="d-flex chart-bar" style={{
-                  width: +this.numberToForChart(r.numberOfConnections) / (this.numberToForChart(this.connectedAreas[0].numberOfConnections) | 1) * 100 + '%',
+                  width: +this.numberToForChart(r.numberOfConnections) / (this.numberToForChart(this.connectedAreas[0].numberOfConnections) || 1) * 100 + '%',
                   backgroundColor: 'rgb(' + r.color.r + ',' + r.color.g + ',' + r.color.b + ')'
                 }}>
                   <small class={(this.theme === 'light' ? 'text-white' : 'text-black') + ' mt-n1 ml-1 text-shadow'}>

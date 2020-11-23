@@ -19,7 +19,7 @@
 
 ## Methods
 
-### `downloadCSV() => Promise<void>`
+### `downloadCSV(floatConnectionNumbers: any) => Promise<void>`
 
 
 
@@ -39,7 +39,7 @@ Type: `Promise<void>`
 
 
 
-### `getCSVData() => Promise<unknown>`
+### `getCSVData(floatConnectionNumbers: any) => Promise<unknown>`
 
 
 
