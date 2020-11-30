@@ -131,7 +131,6 @@ export class HbpConnectivityMatrixRow {
   }
 
   getConnectedAreas = async (areaName) => {
-    this.noDataForRegion = false
     this.fetchConnectedAreas(areaName)
       .then(res => Object.keys(res).map(key => {
           return {name: key, numberOfConnections: res[key]}
@@ -173,6 +172,7 @@ export class HbpConnectivityMatrixRow {
       .then(a => {
         this.connectedAreas = a
         this.dataIsLoading = false
+        this.noDataForRegion = false
         this.emitConnectedRegionEvent()
       })
       .catch(() => {

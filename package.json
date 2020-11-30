@@ -1,6 +1,6 @@
 {
   "name": "hbp-connectivity-component",
-  "version": "0.3.17",
+  "version": "0.3.18",
   "description": "Connectivity Matrix",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
