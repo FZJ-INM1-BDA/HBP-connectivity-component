@@ -54,7 +54,7 @@ export class FullConnectivityGrid {
   componentWillLoad() {
     this.dataIsLoading = true
     if (this.loadurl) this.getConnectedAreas()
-    this.getDatasetInfo()
+    if (this.datasetUrl) this.getDatasetInfo()
   }
 
 

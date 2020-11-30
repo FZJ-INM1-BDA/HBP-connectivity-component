@@ -13,53 +13,55 @@
 
 
 <div style="display:flex;">
-<full-connectivity-grid
-  grid-width="800px"
-  grid-height="800px"
-  dataset-url="https://connectivityquery-connectivity.apps-dev.hbp.eu/studies"
-  theme="dark"
-  onlyExport="true">
-</full-connectivity-grid>
+  <full-connectivity-grid
+    grid-width="800px"
+    grid-height="800px"
+    theme="dark"
+    onlyExport="true">
+  </full-connectivity-grid>
 
-
-<hbp-connectivity-matrix-row
-  style="height: 800px"
-  getregions = "true"
-  region="Area PFt (IPL) - right hemisphere"
-  theme="dark"
-  loadurl="https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c"
-  dataset-url="https://connectivityquery-connectivity.apps-dev.hbp.eu/studies"
-  show-description = "false"
-  show-export = "true"
-  show-source = "false"
-  show-title = "false"
-  show-toolbar = "true"
-  custom-dataset-selector = "true"
-  custom-width="400px"
-  tools_showlog="true"
-  tools_custom='[{"name": "Apply colors to viewer", "type": "checkbox", "checked": false}, {"name": "export csv", "type": "button"}, {"name": "testSlot", "type": "slot"}]'
-  hide-export-view="true"
->
-<!-- http://localhost:5000/v1.1/studies/645449d3909ad960f5c115a8b9c5359ee2dc68bb -->
-<!-- http://localhost:5000/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c -->
-<!-- http://localhost:5000/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b -->
-  <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
-  <div slot="connectedRegionMenu"> <button>Click</button> Menu Goes Here </div>
-  <div slot="testSlot"> Test slote </div>
-</hbp-connectivity-matrix-row>
+<!--  https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b-->
+<!--  https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c-->
+  <hbp-connectivity-matrix-row
+    style="height: 800px"
+    getregions="true"
+    region="Area STS2 (STS) - left hemisphere"
+    theme="dark"
+    loadurl="https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b"
+    show-description="false"
+    show-export="true"
+    show-source="false"
+    show-title="false"
+    show-toolbar="true"
+    custom-dataset-selector="true"
+    custom-width="400px"
+    tools_showlog="true"
+    tools_custom='[{"name": "Apply colors to viewer", "type": "checkbox", "checked": false}, {"name": "export csv", "type": "button"}, {"name": "testSlot", "type": "slot"}]'
+    hide-export-view="true"
+  >
+    <!-- http://localhost:5000/v1.1/studies/645449d3909ad960f5c115a8b9c5359ee2dc68bb -->
+    <!-- http://localhost:5000/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c -->
+    <!-- http://localhost:5000/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b -->
+    <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
+    <div slot="connectedRegionMenu">
+      <button>Click</button>
+      Menu Goes Here
+    </div>
+    <div slot="testSlot"> Test slote</div>
+  </hbp-connectivity-matrix-row>
 </div>
 
 </body>
 <script>
   const a = document.querySelector('hbp-connectivity-matrix-row')
-  a.addEventListener('connectivityDataReceived', event=> {
-      // console.log(event)
+  a.addEventListener('connectivityDataReceived', event => {
+    // console.log(event)
   })
-  a.addEventListener('collapsedMenuChanged', event=> {
-      // console.log(event)
+  a.addEventListener('collapsedMenuChanged', event => {
+    // console.log(event)
   })
-  a.addEventListener('customToolEvent', event=> {
-      console.log(event)
+  a.addEventListener('customToolEvent', event => {
+    console.log(event)
     if (event.detail.name === 'export csv') {
       a.downloadCSV()
     }

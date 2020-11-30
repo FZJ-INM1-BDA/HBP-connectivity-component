@@ -52,6 +52,7 @@ export class HbpConnectivityMatrixRow {
 
   public exportComponentElement!: HTMLExportConnectivityDiagramElement
   floatConnectionNumbers = false
+  noDataForRegion = false
 
   @Watch('region')
   regionChanged(newValue: string, oldValue: string) {
@@ -99,7 +100,7 @@ export class HbpConnectivityMatrixRow {
   componentWillLoad() {
     this.dataIsLoading = true
     if (this.loadurl) this.getConnectedAreas(this.region)
-    this.getDatasetInfo()
+    if (this.datasetUrl) this.getDatasetInfo()
     this.arrayDataWatcher(this.tools_custom)
   }
 
@@ -120,11 +121,17 @@ export class HbpConnectivityMatrixRow {
           'Content-Type': 'application/json'
         }
       })
+    //   .then(res => {
+    //     res.json()
+    //   }).catch(err => {
+    //     return {message: 'Could not fetch dataset'}
+    // })
 
     return responce.json()
   }
 
   getConnectedAreas = async (areaName) => {
+    this.noDataForRegion = false
     this.fetchConnectedAreas(areaName)
       .then(res => Object.keys(res).map(key => {
           return {name: key, numberOfConnections: res[key]}
@@ -169,6 +176,7 @@ export class HbpConnectivityMatrixRow {
         this.emitConnectedRegionEvent()
       })
       .catch(() => {
+        this.noDataForRegion = true
         this.dataIsLoading = false
       })
   }
@@ -385,7 +393,12 @@ export class HbpConnectivityMatrixRow {
           {this.dataIsLoading ? <div class="d-flex justify-content-center">
             <div class={(this.theme === 'light' ? 'loader-color-light' : 'loader-color-black') + ' loader'}>Loading...
             </div>
-          </div> : diagramContent}
+          </div>
+            : this.noDataForRegion?
+              <div class="mt-2">
+                No data is available for the current region and dataset
+              </div>
+              : diagramContent}
 
           {this.showExport === 'true' &&
           <export-connectivity-diagram
