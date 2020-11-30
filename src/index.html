@@ -20,14 +20,19 @@
     onlyExport="true">
   </full-connectivity-grid>
 
-<!--  https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b-->
-<!--  https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c-->
+  <div>
+    <button onclick="changeSource()">Change source</button>
+  </div>
+
+<!-- No connectivity for Area STS2 (STS) - left hemisphere https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b-->
+<!-- Fas connectivity for Area STS2 (STS) - left hemisphere https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c-->
   <hbp-connectivity-matrix-row
+    id = connectivityMatrixRow"
     style="height: 800px"
     getregions="true"
     region="Area STS2 (STS) - left hemisphere"
     theme="dark"
-    loadurl="https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b"
+    loadurl="https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c"
     show-description="false"
     show-export="true"
     show-source="false"
@@ -53,6 +58,8 @@
 
 </body>
 <script>
+
+
   const a = document.querySelector('hbp-connectivity-matrix-row')
   a.addEventListener('connectivityDataReceived', event => {
     // console.log(event)
@@ -66,5 +73,13 @@
       a.downloadCSV()
     }
   })
+
+  changeSource = () => {
+    if (a.loadurl === 'https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c') {
+      a.loadurl = 'https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b'
+    } else {
+      a.loadurl = 'https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c'
+    }
+  }
 </script>
 </html>

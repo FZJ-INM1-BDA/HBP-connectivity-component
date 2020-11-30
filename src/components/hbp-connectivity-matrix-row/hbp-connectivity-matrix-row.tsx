@@ -20,6 +20,7 @@ export class HbpConnectivityMatrixRow {
   @State() collapseMenu = -1
   @State() datasetDescription = ''
   @State() datasetName = ''
+  @State() noDataForRegion = false
 
   // @ts-ignore
   @Event({bubbles: true, composed: true}) connectivityDataReceived: EventEmitter<any>
@@ -52,7 +53,6 @@ export class HbpConnectivityMatrixRow {
 
   public exportComponentElement!: HTMLExportConnectivityDiagramElement
   floatConnectionNumbers = false
-  noDataForRegion = false
 
   @Watch('region')
   regionChanged(newValue: string, oldValue: string) {
