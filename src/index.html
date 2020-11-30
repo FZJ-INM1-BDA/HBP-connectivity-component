@@ -62,13 +62,12 @@
 
   const a = document.querySelector('hbp-connectivity-matrix-row')
   a.addEventListener('connectivityDataReceived', event => {
-    // console.log(event)
+    console.log(event)
   })
   a.addEventListener('collapsedMenuChanged', event => {
     // console.log(event)
   })
   a.addEventListener('customToolEvent', event => {
-    console.log(event)
     if (event.detail.name === 'export csv') {
       a.downloadCSV()
     }

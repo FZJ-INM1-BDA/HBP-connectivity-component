@@ -176,6 +176,7 @@ export class HbpConnectivityMatrixRow {
         this.emitConnectedRegionEvent()
       })
       .catch(() => {
+        this.emitConnectedRegionEvent(false)
         this.noDataForRegion = true
         this.dataIsLoading = false
       })
@@ -194,8 +195,8 @@ export class HbpConnectivityMatrixRow {
     return response.json()
   }
 
-  emitConnectedRegionEvent() {
-    this.connectivityDataReceived.emit(this.connectedAreas)
+  emitConnectedRegionEvent(dataReceived = true) {
+    this.connectivityDataReceived.emit(dataReceived? this.connectedAreas : 'No data')
   }
 
   cleanAreaNameForDiagram(area) {
