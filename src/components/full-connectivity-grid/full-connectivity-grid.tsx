@@ -54,27 +54,42 @@ export class FullConnectivityGrid {
   componentWillLoad() {
     this.dataIsLoading = true
     if (this.loadurl) this.getConnectedAreas()
-    if (this.datasetUrl) this.getDatasetInfo()
   }
 
 
   getConnectedAreas = async () => {
     this.fetchConnectedAreas()
-      .then(res =>
-        Object.keys(res).map(key => {
+      .then(connMatrix => {
+        connMatrix = connMatrix.result
+        this.datasetDescription = connMatrix['src_info']
+        this.datasetName = connMatrix['src_name']
+
+        const matrix = {}
+        for (let i =0; i<connMatrix['column_names'].length; i++) {
+          let profile = {}
+          for (let j = 0; j<connMatrix.matrix[i].length; j++) {
+            profile[connMatrix['column_names'][j]] = connMatrix.matrix[i][j]
+          }
+          matrix[connMatrix['column_names'][i]] = profile
+        }
+        return matrix
+      })
+      .then(matrix =>
+        Object.keys(matrix).map(key => {
             return {
             sourceArea: key,
             connectedAreas:
-              Object.keys(res[key]).map(k => {
+              Object.keys(matrix[key]).map(k => {
                 return {
                   name: k,
-                  numberOfConnections: res[key][k]
+                  numberOfConnections: matrix[key][k]
                 }
               })
           }
         })
       )
       .then(res => {
+        console.log(res)
         this.unfilteredConnections = res
         return res.filter(f => f['numberOfConnections'] > 0)
           .sort((a, b) => +b['numberOfConnections'] - +a['numberOfConnections'])
@@ -151,25 +166,6 @@ export class FullConnectivityGrid {
     } else {
       return 'rgba(0, 0, 0, 0)'
     }
-  }
-
-  getDatasetInfo = async () => {
-    this.fetchDatasetInfo()
-      .then(resp => {
-        this.datasetDescription = resp.description
-        this.datasetName = resp.title
-      })
-  }
-
-  fetchDatasetInfo = async () => {
-    const responce = await fetch(this.datasetUrl,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-    return responce.json()
   }
 
   rangeChange(event) {
@@ -291,7 +287,7 @@ export class FullConnectivityGrid {
             ref={(el) => this.exportFullConnectivityElement = el as HTMLExportFullConnectivityElement}
             el={this.el}
             connections={this.unfilteredConnections}
-            datasetInfo={{name: this.name, description: this.description}}>
+            datasetInfo={{name: this.datasetName, description: this.datasetDescription}}>
           </export-full-connectivity>
         </div>
     ]

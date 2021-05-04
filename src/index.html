@@ -17,22 +17,24 @@
     grid-width="800px"
     grid-height="800px"
     theme="dark"
+    loadurl="https://siibra-api-tmpfullvolmetadata.apps-dev.hbp.eu/v1_0/atlases/juelich/iav/atlas/v1.0.0/1/parcellations/minds/core/parcellationatlas/v1.0.0/94c1125b-b87e-45e4-901c-00daee7f2579-25/features/ConnectivityMatrix/1000BRAINS%20study%2C%20connectivity%20data"
     onlyExport="true">
   </full-connectivity-grid>
 
   <div>
     <button onclick="changeSource()">Change source</button>
   </div>
+  <div>
+    <button onclick="downloadFullGrid()">Download full grid</button>
+  </div>
 
-<!-- No connectivity for Area STS2 (STS) - left hemisphere https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b-->
-<!-- Fas connectivity for Area STS2 (STS) - left hemisphere https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c-->
   <hbp-connectivity-matrix-row
     id = connectivityMatrixRow"
     style="height: 800px"
     getregions="true"
     region="Area STS2 (STS) - left hemisphere"
     theme="dark"
-    loadurl="https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c"
+    loadurl="https://siibra-api-tmpfullvolmetadata.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-25/regions/minds%2Fcore%2Fparcellationregion%2Fv1.0.0%2F5151ab8f-d8cb-4e67-a449-afe2a41fb007/features/ConnectivityProfile/Averaged_FC_JuBrain_184Regions_HCP_REST_FIX_AVER_MEAN"
     show-description="false"
     show-export="true"
     show-source="false"
@@ -44,9 +46,7 @@
     tools_custom='[{"name": "Apply colors to viewer", "type": "checkbox", "checked": false}, {"name": "export csv", "type": "button"}, {"name": "testSlot", "type": "slot"}]'
     hide-export-view="true"
   >
-    <!-- http://localhost:5000/v1.1/studies/645449d3909ad960f5c115a8b9c5359ee2dc68bb -->
-    <!-- http://localhost:5000/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c -->
-    <!-- http://localhost:5000/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b -->
+    <!--    loadurl="https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/fcc3cea4ac5141a22fff9f0daf1ad77def602330"-->
     <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
     <div slot="connectedRegionMenu">
       <button>Click</button>
@@ -64,6 +64,9 @@
   a.addEventListener('connectivityDataReceived', event => {
     console.log(event)
   })
+  a.addEventListener('datasetDataReceived', event => {
+    console.log(event)
+  })
   a.addEventListener('collapsedMenuChanged', event => {
     // console.log(event)
   })
@@ -73,11 +76,19 @@
     }
   })
 
+  const fullGrid = document.querySelector('full-connectivity-grid')
+
+  downloadFullGrid = () => {
+    fullGrid['downloadCSV']()
+  }
+
   changeSource = () => {
-    if (a.loadurl === 'https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c') {
-      a.loadurl = 'https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/2bbe3a900f0da9adfaf9f20c0d73f99133e9690b'
+    const aSource = 'https://siibra-api-tmpfullvolmetadata.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-25/regions/minds%2Fcore%2Fparcellationregion%2Fv1.0.0%2F5151ab8f-d8cb-4e67-a449-afe2a41fb007/features/ConnectivityProfile/Averaged_FC_JuBrain_184Regions_HCP_REST_FIX_AVER_MEAN'
+    const bSource = 'https://siibra-api-tmpfullvolmetadata.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-25/regions/minds%2Fcore%2Fparcellationregion%2Fv1.0.0%2Ff6f10b01-6c10-42cf-8129-f5aaf307a36b/features/ConnectivityProfile/Averaged_FC_JuBrain_184Regions_HCP_REST_FIX_AVER_MEAN'
+    if (a.loadurl === aSource) {
+      a.loadurl = bSource
     } else {
-      a.loadurl = 'https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/1345998a08539dc24bda8817c7d5804558d83b1c'
+      a.loadurl = aSource
     }
   }
 </script>

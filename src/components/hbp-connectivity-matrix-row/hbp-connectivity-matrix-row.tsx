@@ -7,8 +7,6 @@ import {Component, h, Element, State, Prop, Watch, EventEmitter, Method} from "@
 })
 export class HbpConnectivityMatrixRow {
 
-  // ToDo რომელი მენიუს ელემენტი იქნება გახსნილი ეცოდინება მშობელს და მაგ ინფორმაციას დადებს Slot-ში
-
   @Element() el: HTMLElement
   @State() showLog10 = true
   @State() showAllConnectionNumbers = false
@@ -54,19 +52,19 @@ export class HbpConnectivityMatrixRow {
   public exportComponentElement!: HTMLExportConnectivityDiagramElement
   floatConnectionNumbers = false
 
-  @Watch('region')
-  regionChanged(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.collapseMenu = -1
-      this.getConnectedAreas(newValue)
-    }
-  }
+  // @Watch('region')
+  // regionChanged(newValue: string, oldValue: string) {
+  //   if (newValue !== oldValue) {
+  //     this.collapseMenu = -1
+  //     this.getConnectedAreas(newValue)
+  //   }
+  // }
 
   @Watch('loadurl')
   loadurlChanged(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.collapseMenu = -1
-      this.getConnectedAreas(this.region)
+      this.getConnectedAreas()
     }
   }
 
@@ -99,39 +97,23 @@ export class HbpConnectivityMatrixRow {
 
   componentWillLoad() {
     this.dataIsLoading = true
-    if (this.loadurl) this.getConnectedAreas(this.region)
-    if (this.datasetUrl) this.getDatasetInfo()
+    if (this.loadurl) this.getConnectedAreas()
     this.arrayDataWatcher(this.tools_custom)
   }
 
-  getDatasetInfo = async () => {
-    this.fetchDatasetInfo()
-      .then(resp => {
-        this.datasetDescription = resp.description
-        this.datasetName = resp.title
-        this.datasetDataReceived.emit([resp])
-      })
-  }
-
-  fetchDatasetInfo = async () => {
-    const responce = await fetch(this.datasetUrl,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
+  getConnectedAreas = async () => {
+    this.fetchConnectedAreas()
+      .then(res => {
+        this.datasetDescription = res['src_info']
+        this.datasetName = res['src_name']
+        this.datasetDataReceived.emit([{title: res['src_name'], description: res['src_info']}])
+        const profile = {}
+        for (let i =0; i<res['__profile'].length; i++) {
+          profile[res['__column_names'][i]] = res['__profile'][i]
         }
+
+        return profile
       })
-    //   .then(res => {
-    //     res.json()
-    //   }).catch(err => {
-    //     return {message: 'Could not fetch dataset'}
-    // })
-
-    return responce.json()
-  }
-
-  getConnectedAreas = async (areaName) => {
-    this.fetchConnectedAreas(areaName)
       .then(res => Object.keys(res).map(key => {
           return {name: key, numberOfConnections: res[key]}
         })
@@ -182,14 +164,11 @@ export class HbpConnectivityMatrixRow {
       })
   }
 
-  fetchConnectedAreas = async (areaName) => {
+  fetchConnectedAreas = async () => {
     const response = await fetch(this.loadurl,
       {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({'area': `${areaName}`})
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'},
       })
 
     return response.json()
