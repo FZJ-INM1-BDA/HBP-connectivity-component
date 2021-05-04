@@ -89,7 +89,6 @@ export class FullConnectivityGrid {
         })
       )
       .then(res => {
-        console.log(res)
         this.unfilteredConnections = res
         return res.filter(f => f['numberOfConnections'] > 0)
           .sort((a, b) => +b['numberOfConnections'] - +a['numberOfConnections'])
