@@ -372,7 +372,7 @@ export class HbpConnectivityMatrixRow {
 
           {this.dataIsLoading ? <div class="d-flex justify-content-center">
               <div class={(this.theme === 'light' ? 'loader-color-light' : 'loader-color-black') + ' loader mt-3'}>
-                <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                <p></p><p></p><p></p><p></p><p></p>
               </div>
           </div>
             : this.noDataForRegion?

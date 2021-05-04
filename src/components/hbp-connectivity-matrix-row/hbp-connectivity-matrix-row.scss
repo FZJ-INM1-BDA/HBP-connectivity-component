@@ -114,79 +114,40 @@
   background:linear-gradient(transparent 20px, #424242);
 }
 
-
-
-.loader-color-light div {
+.loader p {
+  width: 100px;
+  height: 10px;
+  margin-top: -10px;
+  border-radius: 10px;
+  opacity: 0.6;
+  animation: loader 1s linear infinite;
+}
+.loader-color-light p {
   background: #000
 }
-.loader-color-black div {
+.loader-color-black p {
   background: #fff
 }
-
-.loader {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
+.loader p:nth-child(1) {
+  animation-delay: 0.4s;
 }
-.loader div {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  //background: #fff;
-  animation: loader 1.2s linear infinite;
+.loader p:nth-child(2) {
+  animation-delay: -0.2s;
 }
-.loader div:nth-child(1) {
-  top: 8px;
-  left: 8px;
-  animation-delay: 0s;
+.loader p:nth-child(3) {
+  animation-delay: -0.6s;
 }
-.loader div:nth-child(2) {
-  top: 8px;
-  left: 32px;
-  animation-delay: -0.4s;
+.loader p:nth-child(4) {
+  animation-delay: -0s;
 }
-.loader div:nth-child(3) {
-  top: 8px;
-  left: 56px;
+.loader p:nth-child(5) {
   animation-delay: -0.8s;
-}
-.loader div:nth-child(4) {
-  top: 32px;
-  left: 8px;
-  animation-delay: -0.4s;
-}
-.loader div:nth-child(5) {
-  top: 32px;
-  left: 32px;
-  animation-delay: -0.8s;
-}
-.loader div:nth-child(6) {
-  top: 32px;
-  left: 56px;
-  animation-delay: -1.2s;
-}
-.loader div:nth-child(7) {
-  top: 56px;
-  left: 8px;
-  animation-delay: -0.8s;
-}
-.loader div:nth-child(8) {
-  top: 56px;
-  left: 32px;
-  animation-delay: -1.2s;
-}
-.loader div:nth-child(9) {
-  top: 56px;
-  left: 56px;
-  animation-delay: -1.6s;
 }
 @keyframes loader {
   0%, 100% {
-    opacity: 1;
+    opacity: 0.6;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.3;
   }
 }
