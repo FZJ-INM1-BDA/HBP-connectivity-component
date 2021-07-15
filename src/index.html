@@ -34,7 +34,7 @@
     getregions="true"
     region="Area STS2 (STS) - left hemisphere"
     theme="dark"
-    loadurl="https://siibra-api-tmpfullvolmetadata.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-25/regions/minds%2Fcore%2Fparcellationregion%2Fv1.0.0%2F5151ab8f-d8cb-4e67-a449-afe2a41fb007/features/ConnectivityProfile/Averaged_FC_JuBrain_184Regions_HCP_REST_FIX_AVER_MEAN"
+    loadurl="https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579/regions/Area%20hIP3%20(IPS)%20left/features/ConnectivityProfile/Averaged_SC_JuBrain_184Regions_eNKI_10M_count_MEAN"
     show-description="false"
     show-export="true"
     show-source="false"
@@ -83,8 +83,8 @@
   }
 
   changeSource = () => {
-    const aSource = 'https://siibra-api-tmpfullvolmetadata.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-25/regions/minds%2Fcore%2Fparcellationregion%2Fv1.0.0%2F5151ab8f-d8cb-4e67-a449-afe2a41fb007/features/ConnectivityProfile/Averaged_FC_JuBrain_184Regions_HCP_REST_FIX_AVER_MEAN'
-    const bSource = 'https://siibra-api-tmpfullvolmetadata.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-25/regions/minds%2Fcore%2Fparcellationregion%2Fv1.0.0%2Ff6f10b01-6c10-42cf-8129-f5aaf307a36b/features/ConnectivityProfile/Averaged_FC_JuBrain_184Regions_HCP_REST_FIX_AVER_MEAN'
+    const aSource = 'https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579/regions/Area%20hIP3%20(IPS)%20left/features/ConnectivityProfile/Averaged_SC_JuBrain_184Regions_eNKI_10M_count_MEAN'
+    const bSource = 'https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579/regions/Area%205L%20(SPL)%20left/features/ConnectivityProfile/Averaged_SC_JuBrain_184Regions_eNKI_10M_count_MEAN'
     if (a.loadurl === aSource) {
       a.loadurl = bSource
     } else {

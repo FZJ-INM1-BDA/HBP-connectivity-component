@@ -27,6 +27,8 @@ export class HbpConnectivityMatrixRow {
   // @ts-ignore
   @Event({bubbles: true, composed: true}) datasetDataReceived: EventEmitter<any>
   // @ts-ignore
+  @Event({bubbles: true, composed: true}) loadingStateChanged: EventEmitter<any>
+  // @ts-ignore
   @Event({bubbles: true, composed: true}) customToolEvent: EventEmitter<any>
 
 
@@ -97,13 +99,19 @@ export class HbpConnectivityMatrixRow {
 
   componentWillLoad() {
     this.dataIsLoading = true
+    this.loadingStateChanged.emit(true)
+
     if (this.loadurl) this.getConnectedAreas()
     this.arrayDataWatcher(this.tools_custom)
   }
 
   getConnectedAreas = async () => {
+    this.dataIsLoading = true
+    this.loadingStateChanged.emit(true)
     this.fetchConnectedAreas()
       .then(res => {
+        this.dataIsLoading = false
+        this.loadingStateChanged.emit(false)
         this.datasetDescription = res['src_info']
         this.datasetName = res['src_name']
         this.datasetDataReceived.emit([{title: res['src_name'], description: res['src_info']}])
@@ -154,6 +162,7 @@ export class HbpConnectivityMatrixRow {
       .then(a => {
         this.connectedAreas = a
         this.dataIsLoading = false
+        this.loadingStateChanged.emit(false)
         this.noDataForRegion = false
         this.emitConnectedRegionEvent()
       })
@@ -161,6 +170,7 @@ export class HbpConnectivityMatrixRow {
         this.emitConnectedRegionEvent(false)
         this.noDataForRegion = true
         this.dataIsLoading = false
+        this.loadingStateChanged.emit(false)
       })
   }
 

@@ -131,6 +131,7 @@ declare namespace LocalJSX {
         "onConnectivityDataReceived"?: (event: CustomEvent<any>) => void;
         "onCustomToolEvent"?: (event: CustomEvent<any>) => void;
         "onDatasetDataReceived"?: (event: CustomEvent<any>) => void;
+        "onLoadingStateChanged"?: (event: CustomEvent<any>) => void;
         "region"?: string;
         "showDatasetName"?: string;
         "showDescription"?: string;

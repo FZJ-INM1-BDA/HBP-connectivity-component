@@ -37,6 +37,7 @@
 | `connectivityDataReceived` |             | `CustomEvent<any>` |
 | `customToolEvent`          |             | `CustomEvent<any>` |
 | `datasetDataReceived`      |             | `CustomEvent<any>` |
+| `loadingStateChanged`      |             | `CustomEvent<any>` |
 
 
 ## Methods
