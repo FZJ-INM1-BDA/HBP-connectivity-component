@@ -286,7 +286,7 @@ export class HbpConnectivityMatrixRow {
 
   clearHoveringArea() {
     if (this.hoveringArea >= 0) this.hoveringArea = -1
-    if (this.onHoverFrame && this.onHoverFrame.style.top !== '-200px') this.onHoverFrame.style.top = '-200px'
+    if (this.onHoverFrame && this.onHoverFrame.style.top !== '-2000px') this.onHoverFrame.style.top = '-2000px'
   }
 
   getMousePos(canvas, evt) {
@@ -295,6 +295,11 @@ export class HbpConnectivityMatrixRow {
       x: evt.clientX - rect.left,
       y: evt.clientY - rect.top
     };
+  }
+
+  toggleShowLog() {
+    !this.floatConnectionNumbers? this.showLog10 = !this.showLog10 : null
+    this.setCanvas()
   }
 
   cleanAreaNameForDiagram(area) {
@@ -359,7 +364,7 @@ export class HbpConnectivityMatrixRow {
         </canvas>
         <div ref={(el) => this.onHoverFrame = el as HTMLElement}
              class={(this.theme === 'light' ? 'text-white' : 'text-black') + 'text-shadow position-absolute w-100'}
-             style={{top: '-200px', left: '0', height: '14px',
+             style={{top: '-2000px', left: '0', height: '14px',
                border: '1px solid', paddingLeft: this.textPanelWidth + 'px',
                fontSize: '12px', lineHeight: this.lineHeight + 'px'}}>
           {this.connectedAreas[this.hoveringArea] && this.connectedAreas[this.hoveringArea].numberOfConnections}
@@ -482,7 +487,8 @@ export class HbpConnectivityMatrixRow {
           <span class="mi mi-face"></span>
 
           {this.showToolbar && <small class="d-flex align-items-center flex-wrap">
-            {this.tools_showlog && <div class="mt-2 mr-3 mb-2 cp" onClick={() => !this.floatConnectionNumbers? this.showLog10 = !this.showLog10 : null}>
+            {this.tools_showlog && <div class="mt-2 mr-3 mb-2 cp"
+                                        onClick={() => this.toggleShowLog()}>
               <input checked={this.showLog10 && !this.floatConnectionNumbers}
                      disabled={this.floatConnectionNumbers}
                      id="log-10-check-box"
@@ -507,9 +513,6 @@ export class HbpConnectivityMatrixRow {
             }
           </small>}
 
-          <div style={{position: 'relative'}}>
-            {diagramContent}
-          </div>
           {this.dataIsLoading ? <div class="d-flex justify-content-center">
               <div class={(this.theme === 'light' ? 'loader-color-light' : 'loader-color-black') + ' loader mt-3'}>
                 <p></p><p></p><p></p><p></p><p></p>
@@ -519,7 +522,9 @@ export class HbpConnectivityMatrixRow {
               <div class="mt-2">
                 No data is available for the current region and dataset
               </div>
-              : null}
+              : <div style={{position: 'relative'}}>
+                {diagramContent}
+              </div>}
 
           {this.showExport === 'true' &&
           <export-connectivity-diagram
