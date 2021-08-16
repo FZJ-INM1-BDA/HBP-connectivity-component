@@ -34,6 +34,7 @@
 | Event                      | Description | Type               |
 | -------------------------- | ----------- | ------------------ |
 | `collapsedMenuChanged`     |             | `CustomEvent<any>` |
+| `connectedRegionClicked`   |             | `CustomEvent<any>` |
 | `connectivityDataReceived` |             | `CustomEvent<any>` |
 | `customToolEvent`          |             | `CustomEvent<any>` |
 | `datasetDataReceived`      |             | `CustomEvent<any>` |
