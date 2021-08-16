@@ -522,9 +522,11 @@ export class HbpConnectivityMatrixRow {
               <div class="mt-2">
                 No data is available for the current region and dataset
               </div>
-              : <div style={{position: 'relative'}}>
-                {diagramContent}
-              </div>}
+              : ''}
+
+          <div hidden={this.dataIsLoading || this.noDataForRegion} style={{position: 'relative'}}>
+            {diagramContent}
+          </div>
 
           {this.showExport === 'true' &&
           <export-connectivity-diagram
