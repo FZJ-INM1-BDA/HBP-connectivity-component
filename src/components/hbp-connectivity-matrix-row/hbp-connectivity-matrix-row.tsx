@@ -1,4 +1,4 @@
-import {Component, h, Element, State, Prop, Watch, EventEmitter, Method} from "@stencil/core";
+import {Component, h, Element, State, Prop, Watch, EventEmitter, Method, Listen} from "@stencil/core";
 
 @Component({
   tag: 'hbp-connectivity-matrix-row',
@@ -19,6 +19,12 @@ export class HbpConnectivityMatrixRow {
   @State() datasetDescription = ''
   @State() datasetName = ''
   @State() noDataForRegion = false
+  @State() hoveringArea = -1
+
+  public diagramCanvas!: HTMLCanvasElement
+  public onHoverFrame!: HTMLElement
+  public lineHeight: number
+  public textPanelWidth: number
 
   // @ts-ignore
   @Event({bubbles: true, composed: true}) connectivityDataReceived: EventEmitter<any>
@@ -30,6 +36,8 @@ export class HbpConnectivityMatrixRow {
   @Event({bubbles: true, composed: true}) loadingStateChanged: EventEmitter<any>
   // @ts-ignore
   @Event({bubbles: true, composed: true}) customToolEvent: EventEmitter<any>
+  // @ts-ignore
+  @Event({bubbles: true, composed: true}) connectedRegionClicked: EventEmitter<any>
 
 
   @Prop({mutable: true}) theme: string = ''
@@ -165,6 +173,7 @@ export class HbpConnectivityMatrixRow {
         this.loadingStateChanged.emit(false)
         this.noDataForRegion = false
         this.emitConnectedRegionEvent()
+        this.setCanvas()
       })
       .catch(() => {
         this.emitConnectedRegionEvent(false)
@@ -186,6 +195,106 @@ export class HbpConnectivityMatrixRow {
 
   emitConnectedRegionEvent(dataReceived = true) {
     this.connectivityDataReceived.emit(dataReceived? this.connectedAreas : 'No data')
+  }
+
+  setCanvas() {
+    const context = this.diagramCanvas.getContext('2d')
+
+    const lineHeight = 14
+    const scale = window.devicePixelRatio;
+
+    const width: number = this.customWidth? +this.customWidth/scale : +this.diagramCanvas.offsetWidth
+    const height = this.connectedAreas.length * lineHeight
+
+    this.diagramCanvas.style.width = width + "px";
+    this.diagramCanvas.style.height = height + "px";
+
+    const diagramWidth = Math.floor(width * scale);
+    const diagramHeight = Math.floor(height * scale);
+    this.diagramCanvas.width = diagramWidth
+    this.diagramCanvas.height = diagramHeight;
+
+    context.scale(scale, scale);
+
+    const textPanelWidth = Math.floor(width/3) < 50? 50 : Math.floor(width/3)
+
+    this.lineHeight = lineHeight
+    this.textPanelWidth = textPanelWidth
+
+    this.connectedAreas.forEach((ca, i) => {
+      const indWidth = +this.numberToForChart(ca.numberOfConnections) / (this.numberToForChart(this.connectedAreas[0].numberOfConnections) || 1) * 100
+      const lineWidth = ((diagramWidth/scale)-textPanelWidth)*indWidth/100
+      const correctedLineWidth = Math.floor(lineWidth) < 5? 5 : Math.floor(lineWidth)
+      const lineColor = `rgb(${ca.color.r}, ${ca.color.g}, ${ca.color.b})`
+      context.font = "12px";
+      context.textBaseline = "top";
+      context.fillStyle="#FFF";
+
+      let name = this.cleanAreaNameForDiagram(ca.name)
+      let text = context.measureText(name);
+
+      const normalizeText = (t) => {
+        if (t.width > textPanelWidth) {
+          name = name.slice(0, -1)
+          const mt = context.measureText(name);
+          normalizeText(mt)
+        }
+      }
+      normalizeText(text)
+      context.fillText(name, 0, lineHeight*i)
+
+      // const currentLineHeight = this.collapseMenu === i? lineHeight + 50 : lineHeight
+
+      context.save();
+      context.fillStyle=lineColor;
+      context.fillRect(textPanelWidth,lineHeight*i,correctedLineWidth,lineHeight-4);
+      context.restore();
+    })
+  }
+
+  @Listen('click', { capture: true })
+  handleClick() {
+    if (this.hoveringArea) {
+      this.connectedRegionClicked.emit(this.connectedAreas[this.hoveringArea])
+      // this.collapseMenu = this.collapseMenu !== this.hoveringArea? this.hoveringArea : -1
+      // this.setCanvas()
+    }
+  }
+
+  @Listen('mousemove', { target: 'window' })
+  handleScroll(ev) {
+    const mousePos = this.getMousePos(this.diagramCanvas, ev)
+
+    if (mousePos && mousePos.x && mousePos.y &&
+      mousePos.x < +this.diagramCanvas.offsetWidth
+      && mousePos.y < +this.diagramCanvas.offsetHeight) {
+
+      const pos = mousePos.y - mousePos.y % this.lineHeight
+      const hovering = Math.floor(pos/this.lineHeight)
+      if (hovering !== this.hoveringArea) {
+        this.hoveringArea = hovering
+      }
+      if (hovering >= 0 && this.onHoverFrame) {
+        this.onHoverFrame.style.top = pos + 'px'
+      } else {
+        this.clearHoveringArea()
+      }
+    } else {
+      this.clearHoveringArea()
+    }
+  }
+
+  clearHoveringArea() {
+    if (this.hoveringArea >= 0) this.hoveringArea = -1
+    if (this.onHoverFrame && this.onHoverFrame.style.top !== '-200px') this.onHoverFrame.style.top = '-200px'
+  }
+
+  getMousePos(canvas, evt) {
+    const rect = canvas && canvas.getBoundingClientRect();
+    return rect && {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
   }
 
   cleanAreaNameForDiagram(area) {
@@ -240,65 +349,83 @@ export class HbpConnectivityMatrixRow {
     // const regionDescriptionText = this.el.shadowRoot.querySelector('#regionDescriptionText')
 
     const diagramContent =
-      <div id="chartContent"
-           class={(this.theme === 'light' ? 'bg-light' : 'bg-dark') + ' d-flex flex-column justify-content-start overflow-auto mt-2 pb-5 chart-background-for-screenshot'}>
-        {this.connectedAreas.map((r, i) => (
-          <div
-            class={(this.overConnectedAreaIndex === i || this.collapseMenu === i ? 'border ' + (this.theme === 'light' ? 'border-dark' : 'border-white') : '') + ' d-flex flex-column mr-1 position-relative'}
-            onMouseEnter={() => this.overConnectedAreaIndex = i}
-            onMouseLeave={() => this.overConnectedAreaIndex = -1}>
-            <div class="d-flex align-items-center cp position-relative"
-                 onClick={() => {
-                   this.collapseMenu === i ? this.collapseMenu = -1 : this.collapseMenu = i;
-                   this.collapsedMenuChanged.emit(this.collapseMenu)
-                 }}>
-
-              <small class="w-50 flex-1 no-wrap text-truncate chart-line-height">
-                {this.cleanAreaNameForDiagram(r.name)}
-              </small>
-              <div class="w-100 flex-3 position-relative">
-
-                <div class="d-flex chart-bar" style={{
-                  width: +this.numberToForChart(r.numberOfConnections) / (this.numberToForChart(this.connectedAreas[0].numberOfConnections) || 1) * 100 + '%',
-                  backgroundColor: 'rgb(' + r.color.r + ',' + r.color.g + ',' + r.color.b + ')'
+      <div class="position-relative">
+        <canvas ref={(el) => this.diagramCanvas = el as HTMLCanvasElement}
+                style={{
+                  marginTop: '2px',
+                  height: this.customHeight ? this.customHeight : '100%',
+                  width: this.customWidth ? this.customWidth : '100%'
                 }}>
-                  <small class={(this.theme === 'light' ? 'text-white' : 'text-black') + ' mt-n1 ml-1 text-shadow'}>
-                    {this.overConnectedAreaIndex === i || this.showAllConnectionNumbers ? r.numberOfConnections : ''}
-                  </small>
-                </div>
-
-                {(this.collapseMenu - 1 !== i && this.collapseMenu !== i) &&
-                <div>
-                  <div class="vl border-left border-dark position-absolute w-0 chart-line-1"></div>
-                  <div class="vl border-left border-dark position-absolute w-0 chart-line-2"></div>
-                  <div class="vl border-left border-dark position-absolute w-0 chart-line-3"></div>
-
-                  {i === this.connectedAreas.length - 1 &&
-                  <div>
-                    <div class="position-absolute"
-                         style={{left: 'calc(33.33% - ' + Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections) * 1 / 3).toString().length * 8 + 'px)'}}>
-                      <small><i>{Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections) * 1 / 3)}</i></small>
-                    </div>
-                    <div class="position-absolute"
-                         style={{left: 'calc(66.66% - ' + Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections) * 2 / 3).toString().length * 8 + 'px)'}}>
-                      <small><i>{Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections) * 2 / 3)}</i></small>
-                    </div>
-                    <div class="position-absolute"
-                         style={{left: 'calc(99.99% - ' + Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections)).toString().length * 8 + 'px)'}}>
-                      <small><i>{Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections))}</i></small>
-                    </div>
-                  </div>
-                  }
-                </div>}
-
-              </div>
-            </div>
-
-            {this.collapseMenu === i && <slot name="connectedRegionMenu"/>}
-
-          </div>
-        ))}
+        </canvas>
+        <div ref={(el) => this.onHoverFrame = el as HTMLElement}
+             class={(this.theme === 'light' ? 'text-white' : 'text-black') + 'text-shadow position-absolute w-100'}
+             style={{top: '-200px', left: '0', height: '14px',
+               border: '1px solid', paddingLeft: this.textPanelWidth + 'px',
+               fontSize: '12px', lineHeight: this.lineHeight + 'px'}}>
+          {this.connectedAreas[this.hoveringArea] && this.connectedAreas[this.hoveringArea].numberOfConnections}
+        </div>
       </div>
+
+
+      // <div id="chartContent"
+      //      class={(this.theme === 'light' ? 'bg-light' : 'bg-dark') + ' d-flex flex-column justify-content-start overflow-auto pb-5 chart-background-for-screenshot'}>
+      //   {this.connectedAreas.map((r, i) => (
+      //     <div
+      //       class={(this.overConnectedAreaIndex === i || this.collapseMenu === i ? 'border ' + (this.theme === 'light' ? 'border-dark' : 'border-white') : '') + ' d-flex flex-column mr-1 position-relative'}
+      //       onMouseEnter={() => this.overConnectedAreaIndex = i}
+      //       onMouseLeave={() => this.overConnectedAreaIndex = -1}>
+      //       <div class="d-flex align-items-center cp position-relative"
+      //            onClick={() => {
+      //              this.collapseMenu === i ? this.collapseMenu = -1 : this.collapseMenu = i;
+      //              this.collapsedMenuChanged.emit(this.collapseMenu)
+      //            }}>
+      //
+      //         <div class="w-100 flex-3 position-relative">
+      //
+      //           <div class="d-flex chart-bar" style={{
+      //             width: +this.numberToForChart(r.numberOfConnections) / (this.numberToForChart(this.connectedAreas[0].numberOfConnections) || 1) * 100 + '%',
+      //             backgroundColor: 'rgb(' + r.color.r + ',' + r.color.g + ',' + r.color.b + ')'
+      //           }}>
+      //             <small class={(this.theme === 'light' ? 'text-white' : 'text-black') + ' mt-n1 ml-1 text-shadow'}>
+      //               {this.overConnectedAreaIndex === i || this.showAllConnectionNumbers ? r.numberOfConnections : ''}
+      //             </small>
+      //           </div>
+      //
+      //           {(this.collapseMenu - 1 !== i && this.collapseMenu !== i) &&
+      //           <div>
+      //             <div class="vl border-left border-dark position-absolute w-0 chart-line-1"></div>
+      //             <div class="vl border-left border-dark position-absolute w-0 chart-line-2"></div>
+      //             <div class="vl border-left border-dark position-absolute w-0 chart-line-3"></div>
+      //
+      //             {i === this.connectedAreas.length - 1 &&
+      //             <div>
+      //               <div class="position-absolute"
+      //                    style={{left: 'calc(33.33% - ' + Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections) * 1 / 3).toString().length * 8 + 'px)'}}>
+      //                 <small><i>{Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections) * 1 / 3)}</i></small>
+      //               </div>
+      //               <div class="position-absolute"
+      //                    style={{left: 'calc(66.66% - ' + Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections) * 2 / 3).toString().length * 8 + 'px)'}}>
+      //                 <small><i>{Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections) * 2 / 3)}</i></small>
+      //               </div>
+      //               <div class="position-absolute"
+      //                    style={{left: 'calc(99.99% - ' + Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections)).toString().length * 8 + 'px)'}}>
+      //                 <small><i>{Math.round(this.numberToForChart(this.connectedAreas[0].numberOfConnections))}</i></small>
+      //               </div>
+      //             </div>
+      //             }
+      //           </div>}
+      //
+      //         </div>
+      //         <small class="w-50 flex-1 no-wrap text-truncate chart-line-height">
+      //           {this.cleanAreaNameForDiagram(r.name)}
+      //         </small>
+      //       </div>
+      //
+      //       {this.collapseMenu === i && <slot name="connectedRegionMenu"/>}
+      //
+      //     </div>
+      //   ))}
+      // </div>
 
 
 
@@ -306,8 +433,8 @@ export class HbpConnectivityMatrixRow {
       (
         <div
           class={(this.theme === 'light' ? 'bg-light' : 'bg-dark')
-                + ' container d-block d-flex flex-column p-2 '}
-          style={{height: this.customHeight? this.customHeight : '100%', width: this.customWidth? this.customWidth : '100%'}}>
+                + ' d-block d-flex flex-column p-2 '}>
+          {/*style={{height: this.customHeight? this.customHeight : '100%', width: this.customWidth? this.customWidth : '100%'}}*/}
           <slot name="header"/>
           <div class="d-flex flex-column">
             {this.showTitle === 'true'? <h5>Connectivity Browser</h5> : null}
@@ -380,6 +507,9 @@ export class HbpConnectivityMatrixRow {
             }
           </small>}
 
+          <div style={{position: 'relative'}}>
+            {diagramContent}
+          </div>
           {this.dataIsLoading ? <div class="d-flex justify-content-center">
               <div class={(this.theme === 'light' ? 'loader-color-light' : 'loader-color-black') + ' loader mt-3'}>
                 <p></p><p></p><p></p><p></p><p></p>
@@ -389,7 +519,7 @@ export class HbpConnectivityMatrixRow {
               <div class="mt-2">
                 No data is available for the current region and dataset
               </div>
-              : diagramContent}
+              : null}
 
           {this.showExport === 'true' &&
           <export-connectivity-diagram

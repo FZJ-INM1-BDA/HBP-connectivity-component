@@ -128,6 +128,7 @@ declare namespace LocalJSX {
         "hideExportView"?: string;
         "loadurl"?: string;
         "onCollapsedMenuChanged"?: (event: CustomEvent<any>) => void;
+        "onConnectedRegionClicked"?: (event: CustomEvent<any>) => void;
         "onConnectivityDataReceived"?: (event: CustomEvent<any>) => void;
         "onCustomToolEvent"?: (event: CustomEvent<any>) => void;
         "onDatasetDataReceived"?: (event: CustomEvent<any>) => void;
