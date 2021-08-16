@@ -524,7 +524,7 @@ export class HbpConnectivityMatrixRow {
               </div>
               : ''}
 
-          <div hidden={this.dataIsLoading || this.noDataForRegion} style={{position: 'relative'}}>
+          <div style={{position: 'relative'}}>
             {diagramContent}
           </div>
 
