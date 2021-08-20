@@ -28,6 +28,7 @@
 <!--    <button onclick="downloadFullGrid()">Download full grid</button>-->
 <!--  </div>-->
 
+  <div style="width: 50%">
   <hbp-connectivity-matrix-row
     id = connectivityMatrixRow"
     style="height: 800px"
@@ -41,11 +42,11 @@
     show-title="false"
     show-toolbar="true"
     custom-dataset-selector="true"
-    custom-width="400"
     tools_showlog="true"
     tools_custom='[{"name": "Apply colors to viewer", "type": "checkbox", "checked": false}, {"name": "export csv", "type": "button"}, {"name": "testSlot", "type": "slot"}]'
     hide-export-view="true"
   >
+  </div>
     <!--    loadurl="https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/fcc3cea4ac5141a22fff9f0daf1ad77def602330"-->
     <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
     <div slot="connectedRegionMenu">

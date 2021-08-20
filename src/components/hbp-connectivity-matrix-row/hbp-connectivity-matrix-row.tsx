@@ -23,6 +23,7 @@ export class HbpConnectivityMatrixRow {
 
   public diagramCanvas!: HTMLCanvasElement
   public onHoverFrame!: HTMLElement
+  public diagramParentEl!: HTMLElement
   public lineHeight: number
   public textPanelWidth: number
 
@@ -112,6 +113,15 @@ export class HbpConnectivityMatrixRow {
     if (this.loadurl) this.getConnectedAreas()
     this.arrayDataWatcher(this.tools_custom)
   }
+
+  componentDidLoad() {
+    if(this.diagramParentEl) this.resizeObserver.observe(this.diagramParentEl);
+  }
+
+  componentDidUnload() {
+    this.resizeObserver.unobserve(this.diagramParentEl);
+  }
+
 
   getConnectedAreas = async () => {
     this.dataIsLoading = true
@@ -203,7 +213,7 @@ export class HbpConnectivityMatrixRow {
     const lineHeight = 14
     const scale = window.devicePixelRatio;
 
-    const width: number = this.customWidth? +this.customWidth/scale : +this.diagramCanvas.offsetWidth
+    const width: number = this.customWidth? +this.customWidth/scale : +this.diagramParentEl.offsetWidth
     const height = this.connectedAreas.length * lineHeight
 
     this.diagramCanvas.style.width = width + "px";
@@ -254,7 +264,7 @@ export class HbpConnectivityMatrixRow {
 
   @Listen('click', { capture: true })
   handleClick() {
-    if (this.hoveringArea) {
+    if (this.hoveringArea >= 0) {
       this.connectedRegionClicked.emit(this.connectedAreas[this.hoveringArea])
       // this.collapseMenu = this.collapseMenu !== this.hoveringArea? this.hoveringArea : -1
       // this.setCanvas()
@@ -283,6 +293,11 @@ export class HbpConnectivityMatrixRow {
       this.clearHoveringArea()
     }
   }
+
+  resizeObserver = new (window as any).ResizeObserver(() => {
+    this.setCanvas()
+    if (this.connectedAreas && this.connectedAreas.length) this.setCanvas()
+  });
 
   clearHoveringArea() {
     if (this.hoveringArea >= 0) this.hoveringArea = -1
@@ -354,7 +369,8 @@ export class HbpConnectivityMatrixRow {
     // const regionDescriptionText = this.el.shadowRoot.querySelector('#regionDescriptionText')
 
     const diagramContent =
-      <div class="position-relative">
+      <div ref={(el) => this.diagramParentEl = el as HTMLElement}
+        class="position-relative">
         <canvas ref={(el) => this.diagramCanvas = el as HTMLCanvasElement}
                 style={{
                   marginTop: '2px',
