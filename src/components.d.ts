@@ -27,16 +27,16 @@ export namespace Components {
     }
     interface FullConnectivityGrid {
         "datasetUrl": string;
-        "description": string;
         "downloadCSV": () => Promise<void>;
         "gridheight": string;
         "gridwidth": string;
         "loadurl": string;
-        "name": string;
         "onlyExport": string;
-        "pixelsize": string;
-        "textwidth": string;
+        "pixelsize": number;
+        "textwidth": number;
         "theme": string;
+        "tooltipHeight": number;
+        "tooltipWidth": number;
     }
     interface HbpConnectivityMatrixRow {
         "_tools_custom": CustomTool[];
@@ -108,16 +108,16 @@ declare namespace LocalJSX {
     }
     interface FullConnectivityGrid {
         "datasetUrl"?: string;
-        "description"?: string;
         "gridheight"?: string;
         "gridwidth"?: string;
         "loadurl"?: string;
-        "name"?: string;
         "onConnectivityDataReceived"?: (event: CustomEvent<any>) => void;
         "onlyExport"?: string;
-        "pixelsize"?: string;
-        "textwidth"?: string;
+        "pixelsize"?: number;
+        "textwidth"?: number;
         "theme"?: string;
+        "tooltipHeight"?: number;
+        "tooltipWidth"?: number;
     }
     interface HbpConnectivityMatrixRow {
         "_tools_custom"?: CustomTool[];

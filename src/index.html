@@ -11,86 +11,97 @@
 </head>
 <body>
 
+<div style=" background-color: #424242; " class="d-flex flex-nowrap"> <!--width: auto; overflow: scroll;-->
+<!--  <div style="width: 300px; height: 300px; background-color: red;"></div>-->
 
-<div style="display:flex;">
+<!--  <div style="margin-left: 250px">-->
   <full-connectivity-grid
-    grid-width="800px"
-    grid-height="800px"
     theme="dark"
-    loadurl="https://siibra-api-tmpfullvolmetadata.apps-dev.hbp.eu/v1_0/atlases/juelich/iav/atlas/v1.0.0/1/parcellations/minds/core/parcellationatlas/v1.0.0/94c1125b-b87e-45e4-901c-00daee7f2579-25/features/ConnectivityMatrix/1000BRAINS%20study%2C%20connectivity%20data"
-    onlyExport="true">
-  </full-connectivity-grid>
-
-  <div>
-    <button onclick="changeSource()">Change source</button>
-  </div>
-<!--  <div>-->
-<!--    <button onclick="downloadFullGrid()">Download full grid</button>-->
-<!--  </div>-->
-
-  <div style="width: 50%">
-  <hbp-connectivity-matrix-row
-    id = connectivityMatrixRow"
-    style="height: 800px"
-    getregions="true"
-    region="Area STS2 (STS) - left hemisphere"
-    theme="dark"
-    loadurl="https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579/regions/Area%20hIP3%20(IPS)%20left/features/ConnectivityProfile/Averaged_SC_JuBrain_184Regions_eNKI_10M_count_MEAN"
-    show-description="false"
-    show-export="true"
-    show-source="false"
-    show-title="false"
-    show-toolbar="true"
-    custom-dataset-selector="true"
-    tools_showlog="true"
-    tools_custom='[{"name": "Apply colors to viewer", "type": "checkbox", "checked": false}, {"name": "export csv", "type": "button"}, {"name": "testSlot", "type": "slot"}]'
-    hide-export-view="true"
+    loadurl="https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-290/features/ConnectivityMatrix/Average%20streamline%20counts%20from%20diffusion%20imaging%2C%201000BRAINS%20cohort"
   >
-  </div>
-    <!--    loadurl="https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/fcc3cea4ac5141a22fff9f0daf1ad77def602330"-->
-    <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
-    <div slot="connectedRegionMenu">
-      <button>Click</button>
-      Menu Goes Here
-    </div>
-    <div slot="testSlot"> Test slote</div>
-  </hbp-connectivity-matrix-row>
+  </full-connectivity-grid>
+<!--  </div>-->
 </div>
+
+<!--<div style="display:flex;">-->
+<!--  <full-connectivity-grid-->
+<!--    grid-width="800px"-->
+<!--    grid-height="800px"-->
+<!--    theme="dark"-->
+<!--    loadurl="https://siibra-api-tmpfullvolmetadata.apps-dev.hbp.eu/v1_0/atlases/juelich/iav/atlas/v1.0.0/1/parcellations/minds/core/parcellationatlas/v1.0.0/94c1125b-b87e-45e4-901c-00daee7f2579-25/features/ConnectivityMatrix/1000BRAINS%20study%2C%20connectivity%20data"-->
+<!--    onlyExport="true">-->
+<!--  </full-connectivity-grid>-->
+
+<!--  <div>-->
+<!--    <button onclick="changeSource()">Change source</button>-->
+<!--  </div>-->
+<!--&lt;!&ndash;  <div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <button onclick="downloadFullGrid()">Download full grid</button>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+
+<!--  <div style="width: 50%">-->
+<!--  <hbp-connectivity-matrix-row-->
+<!--    id = connectivityMatrixRow"-->
+<!--    style="height: 800px"-->
+<!--    getregions="true"-->
+<!--    region="Area STS2 (STS) - left hemisphere"-->
+<!--    theme="dark"-->
+<!--    loadurl="https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579/regions/Area%20hIP3%20(IPS)%20left/features/ConnectivityProfile/Averaged_SC_JuBrain_184Regions_eNKI_10M_count_MEAN"-->
+<!--    show-description="false"-->
+<!--    show-export="true"-->
+<!--    show-source="false"-->
+<!--    show-title="false"-->
+<!--    show-toolbar="true"-->
+<!--    custom-dataset-selector="true"-->
+<!--    tools_showlog="true"-->
+<!--    tools_custom='[{"name": "Apply colors to viewer", "type": "checkbox", "checked": false}, {"name": "export csv", "type": "button"}, {"name": "testSlot", "type": "slot"}]'-->
+<!--    hide-export-view="true"-->
+<!--  >-->
+<!--  </div>-->
+<!--    &lt;!&ndash;    loadurl="https://connectivity-query-v1-1-connectivity.apps-dev.hbp.eu/v1.1/studies/fcc3cea4ac5141a22fff9f0daf1ad77def602330"&ndash;&gt;-->
+<!--    <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>-->
+<!--    <div slot="connectedRegionMenu">-->
+<!--      <button>Click</button>-->
+<!--      Menu Goes Here-->
+<!--    </div>-->
+<!--    <div slot="testSlot"> Test slote</div>-->
+<!--  </hbp-connectivity-matrix-row>-->
+<!--</div>-->
 
 </body>
 <script>
 
 
-  const a = document.querySelector('hbp-connectivity-matrix-row')
-  a.addEventListener('connectivityDataReceived', event => {
-    console.log(event)
-  })
-  a.addEventListener('datasetDataReceived', event => {
-    console.log(event)
-  })
-  a.addEventListener('collapsedMenuChanged', event => {
-    // console.log(event)
-  })
-  a.addEventListener('customToolEvent', event => {
-    if (event.detail.name === 'export csv') {
-      a.downloadCSV()
-    }
-  })
-
-  const fullGrid = document.querySelector('full-connectivity-grid')
-
-  downloadFullGrid = () => {
-    fullGrid['downloadCSV']()
-  }
-
-  changeSource = () => {
-    const aSource = 'https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579/regions/Area%20hIP3%20(IPS)%20left/features/ConnectivityProfile/Averaged_SC_JuBrain_184Regions_eNKI_10M_count_MEAN'
-    const bSource = 'https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579/regions/Area%205L%20(SPL)%20left/features/ConnectivityProfile/Averaged_SC_JuBrain_184Regions_eNKI_10M_count_MEAN'
-    if (a.loadurl === aSource) {
-      a.loadurl = bSource
-    } else {
-      a.loadurl = aSource
-    }
-  }
+//  const a = document.querySelector('hbp-connectivity-matrix-row')
+//  a.addEventListener('connectivityDataReceived', event => {
+//    console.log(event)
+//  })
+//  a.addEventListener('datasetDataReceived', event => {
+//    console.log(event)
+//  })
+//  a.addEventListener('collapsedMenuChanged', event => {
+//    // console.log(event)
+//  })
+//  a.addEventListener('customToolEvent', event => {
+//    if (event.detail.name === 'export csv') {
+//      a.downloadCSV()
+//    }
+//  })
+//
+//  const fullGrid = document.querySelector('full-connectivity-grid')
+//
+//  downloadFullGrid = () => {
+//    fullGrid['downloadCSV']()
+//  }
+//
+//  changeSource = () => {
+//    const aSource = 'https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579/regions/Area%20hIP3%20(IPS)%20left/features/ConnectivityProfile/Averaged_SC_JuBrain_184Regions_eNKI_10M_count_MEAN'
+//    const bSource = 'https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579/regions/Area%205L%20(SPL)%20left/features/ConnectivityProfile/Averaged_SC_JuBrain_184Regions_eNKI_10M_count_MEAN'
+//    if (a.loadurl === aSource) {
+//      a.loadurl = bSource
+//    } else {
+//      a.loadurl = aSource
+//    }
+//  }
 </script>
 </html>
