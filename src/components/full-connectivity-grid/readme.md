@@ -7,18 +7,18 @@
 
 ## Properties
 
-| Property      | Attribute     | Description | Type     | Default  |
-| ------------- | ------------- | ----------- | -------- | -------- |
-| `datasetUrl`  | `dataset-url` |             | `string` | `''`     |
-| `description` | `description` |             | `string` | `''`     |
-| `gridheight`  | `gridheight`  |             | `string` | `'100%'` |
-| `gridwidth`   | `gridwidth`   |             | `string` | `'100%'` |
-| `loadurl`     | `loadurl`     |             | `string` | `''`     |
-| `name`        | `name`        |             | `string` | `''`     |
-| `onlyExport`  | `only-export` |             | `string` | `''`     |
-| `pixelsize`   | `pixelsize`   |             | `string` | `'8px'`  |
-| `textwidth`   | `textwidth`   |             | `string` | `'70px'` |
-| `theme`       | `theme`       |             | `string` | `''`     |
+| Property        | Attribute        | Description | Type     | Default  |
+| --------------- | ---------------- | ----------- | -------- | -------- |
+| `datasetUrl`    | `dataset-url`    |             | `string` | `''`     |
+| `gridheight`    | `gridheight`     |             | `string` | `'auto'` |
+| `gridwidth`     | `gridwidth`      |             | `string` | `'auto'` |
+| `loadurl`       | `loadurl`        |             | `string` | `''`     |
+| `onlyExport`    | `only-export`    |             | `string` | `''`     |
+| `pixelsize`     | `pixelsize`      |             | `number` | `10`     |
+| `textwidth`     | `textwidth`      |             | `number` | `70`     |
+| `theme`         | `theme`          |             | `string` | `''`     |
+| `tooltipHeight` | `tooltip-height` |             | `number` | `90`     |
+| `tooltipWidth`  | `tooltip-width`  |             | `number` | `250`    |
 
 
 ## Events

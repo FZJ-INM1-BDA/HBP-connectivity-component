@@ -330,25 +330,25 @@ export class FullConnectivityGrid {
   }
 
   scrolled()  {
-    this.horizontalAreaNames.style.left = this.pixelsize - 2 - this.diagramParent.scrollLeft + 'px'
+    this.horizontalAreaNames.style.left = - this.diagramParent.scrollLeft + 'px'
 
-    this.verticalAreaNames.style.top = this.pixelsize - 2 - this.diagramParent.scrollTop + 'px'
+    this.verticalAreaNames.style.top = - this.diagramParent.scrollTop + 'px'
   }
 
 
   render() {
 
     const diagramContent =
-      <div class="position-relative">
+      <div style={{position: 'relative'}}>
 
         <div style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', maxHeight:'90vh', overflow: 'hidden'}}>
           <canvas ref={(el) => this.verticalAreaNames = el as HTMLCanvasElement}
                   style={{backgroundColor: this.theme === 'light' ? 'white' : 'rgba(66,66,66, 0.9)', zIndex: '1',
-                    position: 'absolute', top: this.pixelsize-2 + 'px', left: this.pixelsize-2 + 'px',
+                    position: 'absolute', top: '0', left: '0',
                     borderRight: '1px solid', borderColor: this.theme === 'light' ? 'black' : 'white'}}></canvas>
           <canvas ref={(el) => this.horizontalAreaNames = el as HTMLCanvasElement}
                   style={{backgroundColor: this.theme === 'light' ? 'white' : 'rgba(66,66,66, 0.9)', zIndex: '1',
-                    position: 'absolute', top: this.pixelsize - 2 + 'px', left: this.pixelsize-2 + 'px',
+                    position: 'absolute', top: '0', left: '0',
                     borderBottom: '1px solid', borderColor: this.theme === 'light' ? 'black' : 'white'}}></canvas>
         </div>
 
