@@ -14,14 +14,26 @@
 <div style=" background-color: #424242; width: 800px; height: 800px; margin-left: 200px" class="d-flex flex-nowrap"> <!--width: auto; overflow: scroll;-->
 <!--  <div style="width: 300px; height: 300px; background-color: red;"></div>-->
 
+  <input type="range" min="1" max="10" value="5" id="myRange">
 <!--  <div style="margin-left: 250px">-->
   <full-connectivity-grid
+    pixelsize="3"
     theme="dark"
     loadurl="https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-290/features/ConnectivityMatrix/Average%20streamline%20counts%20from%20diffusion%20imaging%2C%201000BRAINS%20cohort"
   >
+<!--    loadurl="https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-290/features/ConnectivityMatrix/Average%20streamline%20counts%20from%20diffusion%20imaging%2C%201000BRAINS%20cohort"-->
   </full-connectivity-grid>
 <!--  </div>-->
 </div>
+
+<script>
+  const fullGrid = document.querySelector('full-connectivity-grid')
+  const slider = document.getElementById("myRange");
+
+  slider.oninput = function() {
+    fullGrid.pixelsize = slider.value;
+  }
+</script>
 
 <!--<div style="display:flex;">-->
 <!--  <full-connectivity-grid-->

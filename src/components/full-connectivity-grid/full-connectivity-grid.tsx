@@ -79,30 +79,23 @@ export class FullConnectivityGrid {
         this.datasetDescription = connMatrix['src_info']
         this.datasetName = connMatrix['src_name']
 
-        const matrix = {}
-        for (let i =0; i<connMatrix['column_names'].length; i++) {
-          let profile = {}
-          for (let j = 0; j<connMatrix.matrix[i].length; j++) {
-            profile[connMatrix['column_names'][j]] = connMatrix.matrix[i][j]
+        const matrix = []
+
+        for (let i =0; i<connMatrix.matrix.length; i++) {
+          matrix[i] = {
+            sourceArea: connMatrix.matrix[i][0],
+            connectedAreas: connMatrix.matrix[i].map((m, idx) => idx > 0 && ({
+                name: connMatrix.matrix[idx-1][0],
+                numberOfConnections: m
+              }
+            ))
           }
-          matrix[connMatrix['column_names'][i]] = profile
+          matrix[i].connectedAreas.shift()
         }
+
         return matrix
+
       })
-      .then(matrix =>
-        Object.keys(matrix).map(key => {
-            return {
-            sourceArea: key,
-            connectedAreas:
-              Object.keys(matrix[key]).map(k => {
-                return {
-                  name: k,
-                  numberOfConnections: matrix[key][k]
-                }
-              })
-          }
-        })
-      )
       .then(res => {
         let maxConnection = 0
         res.forEach(profile => {
