@@ -40,6 +40,7 @@ export namespace Components {
     }
     interface HbpConnectivityMatrixRow {
         "_tools_custom": CustomTool[];
+        "connections": string;
         "customDatasetSelector": string;
         "customHeight": string;
         "customWidth": string;
@@ -121,6 +122,7 @@ declare namespace LocalJSX {
     }
     interface HbpConnectivityMatrixRow {
         "_tools_custom"?: CustomTool[];
+        "connections"?: string;
         "customDatasetSelector"?: string;
         "customHeight"?: string;
         "customWidth"?: string;

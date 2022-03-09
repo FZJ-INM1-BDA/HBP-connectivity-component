@@ -42,6 +42,8 @@ export class HbpConnectivityMatrixRow {
 
 
   @Prop({mutable: true}) theme: string = ''
+  @Prop({mutable: true, reflectToAttr: true}) region: string = ''
+  @Prop({mutable: true}) connections: string
   @Prop({mutable: true}) loadurl: string = ''
   @Prop({mutable: true}) datasetUrl: string = ''
   @Prop({mutable: true}) showDatasetName: string = ''
@@ -53,7 +55,6 @@ export class HbpConnectivityMatrixRow {
   @Prop({mutable: true, reflectToAttr: true}) customHeight: string = ''
   @Prop({mutable: true, reflectToAttr: true}) customWidth: string = ''
   @Prop({mutable: true}) customDatasetSelector: string = ''
-  @Prop({mutable: true, reflectToAttr: true}) region: string = ''
   @Prop({mutable: true}) tools_showlog: string = ''
   @Prop({mutable: true}) tools_showallresults: string = ''
   @Prop({mutable: true}) _tools_custom: CustomTool[]
@@ -101,17 +102,28 @@ export class HbpConnectivityMatrixRow {
     }
   }
 
+  @Watch('connections')
+  connectionsWatcher(newValue: string) {
+    if (newValue && newValue.length) {
+      const areas: Connection = JSON.parse(newValue)
+      this.connectedAreas = this.cleanConnectedAreas(areas)
+      setTimeout(() => this.setCanvas())
+    }
+  }
+
   @Method()
   downloadCSV() {
     this.exportComponentElement.downloadCSV(this.floatConnectionNumbers)
   }
 
   componentWillLoad() {
-    this.dataIsLoading = true
-    this.loadingStateChanged.emit(true)
-
-    if (this.loadurl) this.getConnectedAreas()
+    // Init watchers
+    this.connectionsWatcher(this.connections)
     this.arrayDataWatcher(this.tools_custom)
+
+    if (this.loadurl) {
+      this.getConnectedAreas()
+    }
   }
 
   componentDidLoad() {
@@ -128,8 +140,8 @@ export class HbpConnectivityMatrixRow {
     this.loadingStateChanged.emit(true)
     this.fetchConnectedAreas()
       .then(res => {
-        this.dataIsLoading = false
-        this.loadingStateChanged.emit(false)
+        // this.dataIsLoading = false
+        // this.loadingStateChanged.emit(false)
         this.datasetDescription = res['src_info']
         this.datasetName = res['src_name']
         this.datasetDataReceived.emit([{title: res['src_name'], description: res['src_info']}])
@@ -140,43 +152,7 @@ export class HbpConnectivityMatrixRow {
 
         return profile
       })
-      .then(res => Object.keys(res).map(key => {
-          return {name: key, numberOfConnections: res[key]}
-        })
-          .filter(f => f.numberOfConnections > 0)
-          .sort((a, b) => +b.numberOfConnections - +a.numberOfConnections)
-      )
-      .then(addColorToAreas => {
-        this.floatConnectionNumbers = addColorToAreas[0].numberOfConnections<=1
-
-        const logMax = this.floatConnectionNumbers? addColorToAreas[0].numberOfConnections : Math.log(addColorToAreas[0].numberOfConnections)
-        let colorAreas = []
-
-        addColorToAreas.forEach((a,i) => {
-          if (a.name.includes(' - both hemispheres')) {
-
-            const rightTitle = a.name.replace(' - both hemispheres', ' - right hemisphere')
-            const rightHemisphereItemToAdd = {...a, name: rightTitle}
-            addColorToAreas.splice(i+1,0,rightHemisphereItemToAdd)
-
-            addColorToAreas[i] = {
-             ...addColorToAreas[i],
-             name: addColorToAreas[i].name.replace(' - both hemispheres', ' - left hemisphere')
-            }
-          }
-        })
-        addColorToAreas.forEach((a) => {
-          colorAreas.push({
-            ...a,
-            color: {
-              r: this.colormap_red(this.floatConnectionNumbers? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax),
-              g: this.colormap_green(this.floatConnectionNumbers? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax),
-              b: this.colormap_blue(this.floatConnectionNumbers? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax)
-            }
-          })
-        })
-        return colorAreas
-      })
+      .then(res => this.cleanConnectedAreas(res))
       .then(a => {
         this.connectedAreas = a
         this.dataIsLoading = false
@@ -191,6 +167,42 @@ export class HbpConnectivityMatrixRow {
         this.dataIsLoading = false
         this.loadingStateChanged.emit(false)
       })
+  }
+
+  cleanConnectedAreas = (areas) => {
+    const cleanedObj = Object.keys(areas)
+      .map(key => ({name: key, numberOfConnections: areas[key]}))
+      .filter(f => f.numberOfConnections > 0)
+      .sort((a, b) => +b.numberOfConnections - +a.numberOfConnections)
+
+    this.floatConnectionNumbers = cleanedObj[0].numberOfConnections <= 1
+    const logMax = this.floatConnectionNumbers ? cleanedObj[0].numberOfConnections : Math.log(cleanedObj[0].numberOfConnections)
+    let colorAreas = []
+
+    cleanedObj.forEach((a, i) => {
+      if (a.name.includes(' - both hemispheres')) {
+
+        const rightTitle = a.name.replace(' - both hemispheres', ' - right hemisphere')
+        const rightHemisphereItemToAdd = {...a, name: rightTitle}
+        cleanedObj.splice(i + 1, 0, rightHemisphereItemToAdd)
+
+        cleanedObj[i] = {
+          ...cleanedObj[i],
+          name: cleanedObj[i].name.replace(' - both hemispheres', ' - left hemisphere')
+        }
+      }
+    })
+    cleanedObj.forEach((a) => {
+      colorAreas.push({
+        ...a,
+        color: {
+          r: this.colormap_red(this.floatConnectionNumbers ? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax),
+          g: this.colormap_green(this.floatConnectionNumbers ? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax),
+          b: this.colormap_blue(this.floatConnectionNumbers ? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax)
+        }
+      })
+    })
+    return colorAreas
   }
 
   fetchConnectedAreas = async () => {
@@ -454,7 +466,7 @@ export class HbpConnectivityMatrixRow {
               <span>All results</span>
             </div>}
 
-            {this.tools_custom && this.tools_custom.length ?
+            {this._tools_custom && this.tools_custom && this.tools_custom.length ?
               this._tools_custom.map((tool) => (
                 this.customToolsElement(tool)
               ))
@@ -523,6 +535,10 @@ export class HbpConnectivityMatrixRow {
       return this.clamp(-4.0 * x + 2.5);
     }
   }
+}
+
+export interface Connection {
+  [key: string]: number;
 }
 
 export interface CustomTool {
