@@ -7,18 +7,22 @@
 
 ## Properties
 
-| Property        | Attribute        | Description | Type     | Default  |
-| --------------- | ---------------- | ----------- | -------- | -------- |
-| `datasetUrl`    | `dataset-url`    |             | `string` | `''`     |
-| `gridheight`    | `gridheight`     |             | `string` | `'auto'` |
-| `gridwidth`     | `gridwidth`      |             | `string` | `'auto'` |
-| `loadurl`       | `loadurl`        |             | `string` | `''`     |
-| `onlyExport`    | `only-export`    |             | `string` | `''`     |
-| `pixelsize`     | `pixelsize`      |             | `number` | `10`     |
-| `textwidth`     | `textwidth`      |             | `number` | `70`     |
-| `theme`         | `theme`          |             | `string` | `''`     |
-| `tooltipHeight` | `tooltip-height` |             | `number` | `90`     |
-| `tooltipWidth`  | `tooltip-width`  |             | `number` | `250`    |
+| Property             | Attribute             | Description | Type      | Default  |
+| -------------------- | --------------------- | ----------- | --------- | -------- |
+| `dataIsLoading`      | `data-is-loading`     |             | `boolean` | `false`  |
+| `datasetDescription` | `dataset-description` |             | `string`  | `''`     |
+| `datasetName`        | `dataset-name`        |             | `string`  | `''`     |
+| `datasetUrl`         | `dataset-url`         |             | `string`  | `''`     |
+| `gridheight`         | `gridheight`          |             | `string`  | `'auto'` |
+| `gridwidth`          | `gridwidth`           |             | `string`  | `'auto'` |
+| `loadurl`            | `loadurl`             |             | `string`  | `''`     |
+| `matrix`             | `matrix`              | Stringified JSON: [["Area 1" 123, 321] ["Area 2", 321, 123]]            | `string`  | `''`     |
+| `onlyExport`         | `only-export`         |             | `string`  | `''`     |
+| `pixelsize`          | `pixelsize`           |             | `number`  | `10`     |
+| `textwidth`          | `textwidth`           |             | `number`  | `70`     |
+| `theme`              | `theme`               |             | `string`  | `''`     |
+| `tooltipHeight`      | `tooltip-height`      |             | `number`  | `90`     |
+| `tooltipWidth`       | `tooltip-width`       |             | `number`  | `250`    |
 
 
 ## Events

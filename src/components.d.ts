@@ -26,11 +26,15 @@ export namespace Components {
         "getFullConnectivityCSVData": () => Promise<unknown>;
     }
     interface FullConnectivityGrid {
+        "dataIsLoading": boolean;
+        "datasetDescription": string;
+        "datasetName": string;
         "datasetUrl": string;
         "downloadCSV": () => Promise<void>;
         "gridheight": string;
         "gridwidth": string;
         "loadurl": string;
+        "matrix": string;
         "onlyExport": string;
         "pixelsize": number;
         "textwidth": number;
@@ -44,6 +48,7 @@ export namespace Components {
         "customDatasetSelector": string;
         "customHeight": string;
         "customWidth": string;
+        "dataIsLoading": boolean;
         "datasetUrl": string;
         "downloadCSV": () => Promise<void>;
         "hideExportView": string;
@@ -108,10 +113,14 @@ declare namespace LocalJSX {
         "el"?: any;
     }
     interface FullConnectivityGrid {
+        "dataIsLoading"?: boolean;
+        "datasetDescription"?: string;
+        "datasetName"?: string;
         "datasetUrl"?: string;
         "gridheight"?: string;
         "gridwidth"?: string;
         "loadurl"?: string;
+        "matrix"?: string;
         "onConnectivityDataReceived"?: (event: CustomEvent<any>) => void;
         "onlyExport"?: string;
         "pixelsize"?: number;
@@ -126,6 +135,7 @@ declare namespace LocalJSX {
         "customDatasetSelector"?: string;
         "customHeight"?: string;
         "customWidth"?: string;
+        "dataIsLoading"?: boolean;
         "datasetUrl"?: string;
         "hideExportView"?: string;
         "loadurl"?: string;

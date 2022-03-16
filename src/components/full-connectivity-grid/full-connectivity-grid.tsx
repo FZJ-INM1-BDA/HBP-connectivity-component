@@ -8,13 +8,6 @@ import {Component, h, EventEmitter, State, Prop, Method, Element, Listen, Watch}
 export class FullConnectivityGrid {
   @Element() el: HTMLElement
   @State() allConnectedAreas: any
-  // @State() unfilteredConnections: any
-  @State() dataIsLoading = false
-
-  // @State() collapseMenu = -1
-  @State() datasetDescription = ''
-  @State() datasetName = ''
-
   @State() overConnectedAreaIndex = -1
   @State() hoveringX = -1
   @State() hoveringY = -1
@@ -32,6 +25,10 @@ export class FullConnectivityGrid {
   @Prop({mutable: true}) tooltipHeight: number = 90
 
   @Prop({mutable: true}) loadurl: string = ''
+  @Prop({mutable: true}) matrix: string = ''
+  @Prop({mutable: true}) datasetName: string = ''
+  @Prop({mutable: true}) datasetDescription: string = ''
+  @Prop({mutable: true}) dataIsLoading: boolean = false
   // @Prop({mutable: true}) name: string = ''
   // @Prop({mutable: true}) description: string = ''
 
@@ -45,6 +42,13 @@ export class FullConnectivityGrid {
   loadurlChanged(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.getConnectedAreas()
+    }
+  }
+
+  @Watch('matrix')
+  matrixChanged(newValue: string, oldValue: string) {
+    if (newValue !== oldValue && newValue) {
+      this.setMatrix()
     }
   }
 
@@ -68,81 +72,95 @@ export class FullConnectivityGrid {
   @Event({bubbles: true, composed: true}) connectivityDataReceived: EventEmitter<any>
 
   componentWillLoad() {
-    if (this.loadurl) this.getConnectedAreas()
+    if (this.matrix) {
+      this.setMatrix()
+    } else if (this.loadurl) {
+      this.getConnectedAreas()
+    }
+  }
+
+  setMatrix() {
+    this.allConnectedAreas = this.cleanData(JSON.parse(this.matrix))
+    if (!this.onlyExport) {
+      this.generateCanvas()
+    }
   }
 
   getConnectedAreas = async () => {
     this.dataIsLoading = true
     this.fetchConnectedAreas()
       .then(connMatrix => {
-        connMatrix = connMatrix.result
         this.datasetDescription = connMatrix['src_info']
         this.datasetName = connMatrix['src_name']
-
-        const matrix = []
-
-        for (let i =0; i<connMatrix.matrix.length; i++) {
-          matrix[i] = {
-            sourceArea: connMatrix.matrix[i][0],
-            connectedAreas: connMatrix.matrix[i].map((m, idx) => idx > 0 && ({
-                name: connMatrix.matrix[idx-1][0],
-                numberOfConnections: m
-              }
-            ))
-          }
-          matrix[i].connectedAreas.shift()
-        }
-
-        return matrix
-
-      })
-      .then(res => {
-        let maxConnection = 0
-        res.forEach(profile => {
-          profile.connectedAreas.forEach(areas => {
-            if (areas.numberOfConnections > maxConnection) maxConnection = areas.numberOfConnections
-          })
-        })
-        const logMax = Math.log(maxConnection)
-
-        const colorAreas = res.map(profile => {
-          return {
-            ...profile,
-            connectedAreas: profile.connectedAreas.map((a) => {
-              let r = this.colormap_red(Math.log(a.numberOfConnections) / logMax)
-              let g = this.colormap_green(Math.log(a.numberOfConnections) / logMax)
-              let b = this.colormap_blue(Math.log(a.numberOfConnections) / logMax)
-
-              if (r === 0 && g ===0 && b === 0) {
-                if (this.theme === 'light') {
-                  r = 255
-                  g = 255
-                  b = 255
-                } else {
-                  r = 66
-                  g = 66
-                  b = 66
-                }
-              }
-
-              return {
-                ...a,
-                color: {r, g, b}
-              }
-            })
-          }
-        })
-        return colorAreas
+        return this.cleanData(connMatrix.result)
       })
       .then(a => {
         this.allConnectedAreas = a
         this.dataIsLoading = false
         this.emitAllConnectedAreaEvent()
-        this.generateCanvas()
+        if (!this.onlyExport) {
+          this.generateCanvas()
+        }
       })
       .catch(() => {
         this.dataIsLoading = false
       })
+  }
+
+  cleanData = (data) => {
+
+    const matrix = []
+
+    for (let i =0; i<data.length; i++) {
+      matrix[i] = {
+        sourceArea: data[i][0],
+        connectedAreas: data[i].map((m, idx) => idx > 0 && ({
+            name: data[idx-1][0],
+            numberOfConnections: m
+          }
+        ))
+      }
+      matrix[i].connectedAreas.shift()
+    }
+
+    let maxConnection = 0
+    matrix.forEach(profile => {
+      profile.connectedAreas.forEach(areas => {
+        if (areas.numberOfConnections > maxConnection) maxConnection = areas.numberOfConnections
+      })
+    })
+    const logMax = Math.log(maxConnection)
+
+    const colorAreas = matrix.map(profile => {
+      return {
+        ...profile,
+        connectedAreas: profile.connectedAreas.map((a) => {
+          let r = this.colormap_red(Math.log(a.numberOfConnections) / logMax)
+          let g = this.colormap_green(Math.log(a.numberOfConnections) / logMax)
+          let b = this.colormap_blue(Math.log(a.numberOfConnections) / logMax)
+
+          if (r === 0 && g ===0 && b === 0) {
+            if (this.theme === 'light') {
+              r = 255
+              g = 255
+              b = 255
+            } else {
+              r = 66
+              g = 66
+              b = 66
+            }
+          }
+
+          return {
+            ...a,
+            color: {r, g, b}
+          }
+        })
+      }
+    })
+    return colorAreas
+
+
   }
 
 

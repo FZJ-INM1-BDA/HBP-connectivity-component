@@ -10,10 +10,11 @@
 | Property                | Attribute                 | Description | Type                     | Default     |
 | ----------------------- | ------------------------- | ----------- | ------------------------ | ----------- |
 | `_tools_custom`         | --                        |             | `CustomTool[]`           | `undefined` |
-| `connections`           | `connections`             | format should be: '{"region name": number of connections}'            | `string`                 | `undefined` |
+| `connections`           | `connections`             |             | `string`                 | `undefined` |
 | `customDatasetSelector` | `custom-dataset-selector` |             | `string`                 | `''`        |
 | `customHeight`          | `custom-height`           |             | `string`                 | `''`        |
 | `customWidth`           | `custom-width`            |             | `string`                 | `''`        |
+| `dataIsLoading`         | `data-is-loading`         |             | `boolean`                | `false`     |
 | `datasetUrl`            | `dataset-url`             |             | `string`                 | `''`        |
 | `hideExportView`        | `hide-export-view`        |             | `string`                 | `undefined` |
 | `loadurl`               | `loadurl`                 |             | `string`                 | `''`        |

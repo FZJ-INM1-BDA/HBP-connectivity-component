@@ -14,7 +14,6 @@ export class HbpConnectivityMatrixRow {
   @State() overConnectedAreaIndex = -1
   @State() collapsedConnectivityDescription = false
   @State() regionDescriptionText
-  @State() dataIsLoading = false
   @State() collapseMenu = -1
   @State() datasetDescription = ''
   @State() datasetName = ''
@@ -60,6 +59,7 @@ export class HbpConnectivityMatrixRow {
   @Prop({mutable: true}) _tools_custom: CustomTool[]
   @Prop({mutable: true}) tools_custom: CustomTool[] | string
   @Prop({mutable: true}) hideExportView: string
+  @Prop({mutable: true}) dataIsLoading: boolean = false
 
   public exportComponentElement!: HTMLExportConnectivityDiagramElement
   floatConnectionNumbers = false
