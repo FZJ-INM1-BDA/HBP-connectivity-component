@@ -55,6 +55,16 @@ Type: `Promise<void>`
 
 
 
+### `toggleShowLog() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Dependencies
 

@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { CustomTool } from "./components/hbp-connectivity-matrix-row/hbp-connectivity-matrix-row";
+import { Connection, CustomTool } from "./components/hbp-connectivity-matrix-row/hbp-connectivity-matrix-row";
 export namespace Components {
     interface ExportConnectivityDiagram {
         "connectedAreas": any;
@@ -61,6 +61,7 @@ export namespace Components {
         "showTitle": string;
         "showToolbar": string;
         "theme": string;
+        "toggleShowLog": () => Promise<void>;
         "tools_custom": CustomTool[] | string;
         "tools_showallresults": string;
         "tools_showlog": string;

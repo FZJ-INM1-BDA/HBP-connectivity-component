@@ -52,6 +52,7 @@
 
   <div>
     <button onclick="addConnections()">Change source</button>
+    <button onclick="toggleLog()">Toggle log</button>
   </div>
 <!--&lt;!&ndash;  <div>&ndash;&gt;-->
 <!--&lt;!&ndash;    <button onclick="downloadFullGrid()">Download full grid</button>&ndash;&gt;-->
@@ -83,8 +84,12 @@
 </body>
 <script>
 
+  const a = document.querySelector('hbp-connectivity-matrix-row')
 
- const a = document.querySelector('hbp-connectivity-matrix-row')
+  const toggleLog = () => {
+    a.toggleShowLog()
+  }
+
 
 //  a.addEventListener('connectivityDataReceived', event => {
 //    console.log(event)

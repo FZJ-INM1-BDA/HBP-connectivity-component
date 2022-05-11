@@ -105,6 +105,7 @@ export class HbpConnectivityMatrixRow {
   @Watch('connections')
   connectionsWatcher(newValue: string) {
     if (newValue && newValue.length) {
+      this.connections = newValue
       const areas: Connection = JSON.parse(newValue)
       this.connectedAreas = this.cleanConnectedAreas(areas)
       setTimeout(() => this.setCanvas())
@@ -169,14 +170,17 @@ export class HbpConnectivityMatrixRow {
       })
   }
 
-  cleanConnectedAreas = (areas) => {
+  cleanConnectedAreas = (areas, setShowLog = true) => {
     const cleanedObj = Object.keys(areas)
       .map(key => ({name: key, numberOfConnections: areas[key]}))
       .filter(f => f.numberOfConnections > 0)
       .sort((a, b) => +b.numberOfConnections - +a.numberOfConnections)
 
     this.floatConnectionNumbers = cleanedObj[0].numberOfConnections <= 1
-    const logMax = this.floatConnectionNumbers ? cleanedObj[0].numberOfConnections : Math.log(cleanedObj[0].numberOfConnections)
+    if (setShowLog) {
+      this.showLog10 = this.floatConnectionNumbers? false : true
+    }
+    const logMax = this.showLog10 ? Math.log(cleanedObj[0].numberOfConnections) : cleanedObj[0].numberOfConnections
     let colorAreas = []
 
     cleanedObj.forEach((a, i) => {
@@ -196,9 +200,9 @@ export class HbpConnectivityMatrixRow {
       colorAreas.push({
         ...a,
         color: {
-          r: this.colormap_red(this.floatConnectionNumbers ? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax),
-          g: this.colormap_green(this.floatConnectionNumbers ? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax),
-          b: this.colormap_blue(this.floatConnectionNumbers ? a.numberOfConnections : Math.log(a.numberOfConnections) / logMax)
+          r: this.colormap_red((this.showLog10 ? Math.log(a.numberOfConnections) : a.numberOfConnections) / logMax ),
+          g: this.colormap_green((this.showLog10 ? Math.log(a.numberOfConnections) : a.numberOfConnections) / logMax ),
+          b: this.colormap_blue((this.showLog10 ? Math.log(a.numberOfConnections) : a.numberOfConnections) / logMax )
         }
       })
     })
@@ -320,8 +324,10 @@ export class HbpConnectivityMatrixRow {
     };
   }
 
+  @Method()
   toggleShowLog() {
     !this.floatConnectionNumbers? this.showLog10 = !this.showLog10 : null
+    this.connectedAreas = this.cleanConnectedAreas(JSON.parse(this.connections) as Connection, false)
     this.setCanvas()
   }
 

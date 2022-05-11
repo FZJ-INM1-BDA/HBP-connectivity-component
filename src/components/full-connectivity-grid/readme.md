@@ -16,7 +16,7 @@
 | `gridheight`         | `gridheight`          |             | `string`  | `'auto'` |
 | `gridwidth`          | `gridwidth`           |             | `string`  | `'auto'` |
 | `loadurl`            | `loadurl`             |             | `string`  | `''`     |
-| `matrix`             | `matrix`              | Stringified JSON: [["Area 1" 123, 321] ["Area 2", 321, 123]]            | `string`  | `''`     |
+| `matrix`             | `matrix`              |             | `string`  | `''`     |
 | `onlyExport`         | `only-export`         |             | `string`  | `''`     |
 | `pixelsize`          | `pixelsize`           |             | `number`  | `10`     |
 | `textwidth`          | `textwidth`           |             | `number`  | `70`     |
