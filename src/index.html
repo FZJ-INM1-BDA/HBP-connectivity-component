@@ -11,20 +11,20 @@
 </head>
 <body>
 
-<div style=" background-color: #424242; width: 800px; height: 800px; margin-left: 200px" class="d-flex flex-nowrap"> <!--width: auto; overflow: scroll;-->
+<!--<div style=" background-color: #424242; width: 800px; height: 800px; margin-left: 200px" class="d-flex flex-nowrap"> &lt;!&ndash;width: auto; overflow: scroll;&ndash;&gt;-->
 
-  <button onclick="exportCon()">Export</button>
-  <button onclick="changeDataset()">Change</button>
-  <input type="range" min="1" max="10" value="5" id="myRange">
-  <full-connectivity-grid
-    pixelsize="3"
-    theme="dark"
-    only-export="true"
-    matrix='[["reg1", 1, 2, 3], ["reg2", 1,2,3], ["reg3", 1,2,3]]'
-  >
-<!--    loadurl="https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-290/features/ConnectivityMatrix/Average%20streamline%20counts%20from%20diffusion%20imaging%2C%201000BRAINS%20cohort"-->
-  </full-connectivity-grid>
-</div>
+<!--  <button onclick="exportCon()">Export</button>-->
+<!--  <button onclick="changeDataset()">Change</button>-->
+<!--  <input type="range" min="1" max="10" value="5" id="myRange">-->
+<!--  <full-connectivity-grid-->
+<!--    pixelsize="3"-->
+<!--    theme="dark"-->
+<!--    only-export="true"-->
+<!--    matrix='[["reg1", 1, 2, 3], ["reg2", 1,2,3], ["reg3", 1,2,3]]'-->
+<!--  >-->
+<!--&lt;!&ndash;    loadurl="https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-290/features/ConnectivityMatrix/Average%20streamline%20counts%20from%20diffusion%20imaging%2C%201000BRAINS%20cohort"&ndash;&gt;-->
+<!--  </full-connectivity-grid>-->
+<!--</div>-->
 
 <script>
   const fullGrid = document.querySelector('full-connectivity-grid')
@@ -62,6 +62,7 @@
 <!--    loadurl="https://siibra-api-latest.apps-dev.hbp.eu/v1_0/atlases/juelich%2Fiav%2Fatlas%2Fv1.0.0%2F1/parcellations/minds%2Fcore%2Fparcellationatlas%2Fv1.0.0%2F94c1125b-b87e-45e4-901c-00daee7f2579-290/regions/Frontal-II%20(GapMap)%20right/features/ConnectivityProfile/e428cb6b-0110-4205-94ac-533ca5de6bb5"-->
 <!--    connections='{"rea 1 (PostCG) left": 132,"Area 1 (PostCG) right": 4296,"Area 2 (PostCS) left": 75,"Area 2 (PostCS) right": 2309,"Area 3a (PostCG) left": 40,"Area 3a (PostCG) right": 1082,"Area 3b (PostCG) left": 116,"Area 3b (PostCG) right": 4506,"Area 4a (PreCG) left": 1962,"Area 4a (PreCG) right": 1526,"Area 4p (PreCG) left": 41,"Area 4p (PreCG) right": 652,"Area 5Ci (SPL) left": 7,"Area 5Ci (SPL) right: 1,Area 5L (SPL) left": 31,"Area 5L (SPL) right": 77,"rea 5M (SPL) left": 52,"Area Fo2 (OFC) left": 0}'-->
   <hbp-connectivity-matrix-row
+    connections='{"rea 1 (PostCG) left": 132,"Area 1 (PostCG) right": 4296,"Area 2 (PostCS) left": 75,"Area 2 (PostCS) right": 2309,"Area 3a (PostCG) left": 40,"Area 3a (PostCG) right": 1082,"Area 3b (PostCG) left": 116,"Area 3b (PostCG) right": 4506,"Area 4a (PreCG) left": 1962,"Area 4a (PreCG) right": 1526,"Area 4p (PreCG) left": 41,"Area 4p (PreCG) right": 652,"Area 5Ci (SPL) left": 7,"Area 5Ci (SPL) right: 1,Area 5L (SPL) left": 31,"Area 5L (SPL) right": 77,"rea 5M (SPL) left": 52,"Area Fo2 (OFC) left": 0}'
     id = connectivityMatrixRow"
     style="height: 800px"
     region="Area STS2 (STS) - left hemisphere"
@@ -75,9 +76,9 @@
     tools_showlog="true"
     tools_custom='[{"name": "Apply colors to viewer", "type": "checkbox", "checked": false}, {"name": "export csv", "type": "button"}, {"name": "testSlot", "type": "slot"}]'
     hide-export-view="true"
-    data-is-loading="true"
   >
-    <div style="width: 100%; display:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
+<!--    data-is-loading="true"-->
+    <div style="width: 100%; dsisplay:flex; justify-content: flex-end; margin-top: 10px;" slot="header">X</div>
   </hbp-connectivity-matrix-row>
 <!--</div>-->
 
