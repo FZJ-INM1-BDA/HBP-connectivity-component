@@ -29,16 +29,6 @@ Type: `Promise<void>`
 
 
 
-### `downloadPng() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
 ### `getCSVData(floatConnectionNumbers: any) => Promise<unknown>`
 
 

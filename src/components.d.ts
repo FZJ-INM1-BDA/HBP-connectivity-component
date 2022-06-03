@@ -11,7 +11,6 @@ export namespace Components {
         "connectedAreas": any;
         "datasetInfo": any;
         "downloadCSV": (floatConnectionNumbers: any) => Promise<void>;
-        "downloadPng": () => Promise<void>;
         "el": any;
         "getCSVData": (floatConnectionNumbers: any) => Promise<unknown>;
         "hideView": string;
