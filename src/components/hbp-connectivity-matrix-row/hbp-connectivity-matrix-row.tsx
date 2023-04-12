@@ -325,6 +325,13 @@ export class HbpConnectivityMatrixRow {
   }
 
   @Method()
+  setShowLog(flag: boolean) {
+    this.showLog10 = flag
+    this.connectedAreas = this.cleanConnectedAreas(JSON.parse(this.connections) as Connection, false)
+    this.setCanvas()
+  }
+
+  @Method()
   toggleShowLog() {
     !this.floatConnectionNumbers? this.showLog10 = !this.showLog10 : null
     this.connectedAreas = this.cleanConnectedAreas(JSON.parse(this.connections) as Connection, false)
