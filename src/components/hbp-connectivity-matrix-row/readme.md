@@ -55,6 +55,16 @@ Type: `Promise<void>`
 
 
 
+### `setShowLog(flag: boolean) => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `toggleShowLog() => Promise<void>`
 
 

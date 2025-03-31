@@ -1,6 +1,6 @@
 {
   "name": "hbp-connectivity-component",
-  "version": "0.6.6",
+  "version": "0.6.8",
   "description": "Connectivity Matrix",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -22,13 +22,16 @@
   },
   "devDependencies": {
     "@stencil/sass": "^1.1.1",
-    "rollup-plugin-node-polyfills": "^0.2.1"
-  },
-  "license": "MIT",
-  "dependencies": {
+    "rollup-plugin-node-polyfills": "^0.2.1",
     "@stencil/core": "^1.16.5",
     "@types/node": "^14.0.24",
     "bootstrap": "^4.4.1",
     "jszip": "^3.5.0"
+  },
+  "license": "MIT",
+  "dependencies": {
+  },
+  "repository": {
+    "url": "https://github.com/FZJ-INM1-BDA/HBP-connectivity-component"
   }
 }

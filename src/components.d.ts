@@ -53,6 +53,7 @@ export namespace Components {
         "hideExportView": string;
         "loadurl": string;
         "region": string;
+        "setShowLog": (flag: boolean) => Promise<void>;
         "showDatasetName": string;
         "showDescription": string;
         "showExport": string;
