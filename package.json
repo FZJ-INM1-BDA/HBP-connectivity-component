@@ -25,7 +25,7 @@
     "rollup-plugin-node-polyfills": "^0.2.1",
     "@stencil/core": "^1.16.5",
     "@types/node": "^14.0.24",
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^5.0.0",
     "jszip": "^3.5.0"
   },
   "license": "MIT",
